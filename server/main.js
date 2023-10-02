@@ -26,7 +26,13 @@ wss.on("connection", (ws, req) => {
     ws.send(JSON.stringify({ type: "INITIAL_STATE", data: cellStates }));
 
     const clientIP = req.connection.remoteAddress;
-    console.log(`Client connected from IP: ${clientIP}. Client was sent INITIAL_STATE package`);
+    console.log(`Client connected from IP: ${clientIP}. Client was sent INITIAL_STATE package. Now there are ${wss.clients.size} connected clients`);
+
+    wss.clients.forEach((ws) => {
+        ws.send(
+            JSON.stringify({ type: "CONNECTION_COUNT", data: wss.clients.size })
+        );
+    })
 
     // Handle messages from clients
     ws.on("message", (message) => {
@@ -54,8 +60,24 @@ wss.on("connection", (ws, req) => {
         } 
         else if (type === "POLL_STATE") {
             ws.send(
-                JSON.stringify({ type: "CURRENT_CELL_STATES", cells: cellStates })
+                JSON.stringify({ type: "STATE_UPDATE", cells: cellStates })
+            );
+        } 
+        else if (type == "RESET_STATE") {
+            cellStates = Array(10).fill(STATE_CODE_EMPTY);
+            ws.send(
+                JSON.stringify({ type: "STATE_UPDATE", cells: cellStates })
             );
         }
     });
+
+    ws.on("close", () => {
+        console.log(`Client Disconnected. Now there are ${wss.clients.size} remaining clients`);
+        wss.clients.forEach((ws) => {
+            ws.send(
+                JSON.stringify({ type: "CONNECTION_COUNT", data: wss.clients.size })
+            );
+        });
+    })
 });
+
