@@ -25,8 +25,8 @@ const Park = ({id, toggleStateFunction, state}) => {
                 <h3>Park #{id+1}</h3>
                 <p>
                     This is a park. 
-                    Dont park in it though because someone else booked it. 
-                    Suck shit loser
+                    Lorem Ipsum etc etc.
+                    Generic Text Field Here.
                 </p>
                 <h4>This spot is currently {state ? "🟢 Free" : "🔴 Taken"}</h4>
                 <div className="container">
