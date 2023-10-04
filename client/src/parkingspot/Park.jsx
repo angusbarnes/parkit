@@ -8,6 +8,9 @@ import QRCode from "react-qr-code";
 const Park = ({id, toggleStateFunction, state}) => {
 
     const qrModal = useModal();
+    const bookingModal = useModal()
+
+    const [plate, setPlate] = useState('null')
 
     return (
         <div className="grid-item">
@@ -18,9 +21,17 @@ const Park = ({id, toggleStateFunction, state}) => {
                     <QRCode
                         size={256}
                         style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                        value={"http://parkit.cc"}
+                        value={"http://parkit.cc/"}
                         viewBox={`0 0 256 256`}
                     />
+                </Modal>
+                <Modal modalState={bookingModal}>
+                    <h3 style={{width: 350}}>Book this park</h3>
+                    <label style={{paddingTop: 20}}>Please Enter your license plate number:</label>
+                    <input type="text" value={plate} onChange={(e) => setPlate(e.target.value)} />
+                    <div className="container" style={{padding: 15, paddingBottom: 0}}>
+                        <Button color={"blue"} label={"Book"} onClick={() => {bookingModal.close(); toggleStateFunction(id, true)}}/>
+                    </div>
                 </Modal>
                 <h3>Park #{id+1}</h3>
                 <p>
@@ -30,9 +41,8 @@ const Park = ({id, toggleStateFunction, state}) => {
                 </p>
                 <h4>This spot is currently {state ? "🟢 Free" : "🔴 Taken"}</h4>
                 <div className="container">
-
                     <div className="button-group">
-                        <Button disabled={state} color={"blue"} label={"Book"} onClick={() => {toggleStateFunction(id, true)}}/>
+                        <Button disabled={state} color={"blue"} label={"Book"} onClick={() => {bookingModal.open()}}/>
                         <Button disabled={state} color={"red"} label={"Cancel"} onClick={() => {toggleStateFunction(id, false)}}/>
                         <button onClick={() => {qrModal.open()}}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" height={'auto'} className={"svg-icon"}>

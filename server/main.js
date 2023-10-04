@@ -33,6 +33,7 @@ let sendConnectionCount = () => {
 
 wss.on("connection", (ws, req) => {
     // Send the current state to the newly connected client
+    ws.send(JSON.stringify({type: "DB_SIZE_RESPONSE", data: cellStates.length}))
     sendStateUpdate(ws, cellStates);
 
     const clientIP = req.connection.remoteAddress;
@@ -68,6 +69,15 @@ wss.on("connection", (ws, req) => {
         } else if (type == "RESET_STATE") {
             cellStates = Array(10).fill(STATE_CODE_EMPTY);
             ws.send(JSON.stringify({ type: "STATE_UPDATE", cells: cellStates }));
+        } else if (type == "DB_RESIZE_EVENT") {
+            newStates = Array(10).fill(0);
+            cellStates.push(...newStates);
+        } else if (type == "ESTABLISH_DEVICE_CONNECTION") {
+
+        } else if (type == "REQUEST_DEVICE_LIST") {
+
+        } else if (type == "REQUEST_DB_SIZE") {
+            ws.send(JSON.stringify({type: "DB_SIZE_RESPONSE", data: cellStates.length}))
         }
     });
 

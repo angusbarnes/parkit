@@ -6,6 +6,8 @@ import Navbar from "./navbar/Navbar";
 import ContentBox from "./layout/ContentBox";
 import GridContainer from "./layout/GridContainer";
 import Park from "./parkingspot/Park";
+import { useModal } from "./modal/useModal";
+import Modal from "./modal/Modal";
 
 function ParkingModal({ isOpen, onClose, onSubmit }) {
     const [name, setName] = useState("");
@@ -93,12 +95,15 @@ function ParkingSpotList({ numberOfSpots, parkingStateHandler, available }) {
 }
 
 function App() {
-    const [socketUrl, setSocketUrl] = useState("ws://www.parkit.cc");
+    const [socketUrl, setSocketUrl] = useState("ws://parkit.cc:80");
     const [messageHistory, setMessageHistory] = useState([]);
     const [availabilityData, setAvailabilityData] = useState([]);
     const [connectionCount, setConnectionCount] = useState(0);
+    const [parkingSpaceCount, setParkingSpaceCount] = useState(10)
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+    const errorModal = useModal();
 
     useEffect(() => {
         if (lastMessage !== null) {
@@ -115,7 +120,11 @@ function App() {
               case "CONNECTION_COUNT":
                 setConnectionCount(data);
                 break;
-            
+
+              case "DB_SIZE_RESPONSE":
+                setParkingSpaceCount(data);
+                break;
+
               default:
                 console.warn(`Unhandled message type: ${type}`);
                 break;
@@ -155,6 +164,8 @@ function App() {
         [ReadyState.UNINSTANTIATED]: "Uninstantiated",
     }[readyState];
 
+    //sendMessage(JSON.stringify({type: "REQUEST_DB_SIZE"}))
+
     return (
         <div>
             <Navbar
@@ -163,12 +174,15 @@ function App() {
                     sendMessage(JSON.stringify({ type: "RESET_STATE" }));
                 }}
             ></Navbar>
+            <Modal modalState={errorModal} style={{backgroundColor: "#F08080"}}>
+                <h3 style={{color: "white"}}><b>ERROR</b></h3>
+            </Modal>
             <ContentBox>
                 <p>
                     <b>Please Select from the available slots:</b>
                 </p>
                 <ParkingSpotList
-                    numberOfSpots={10}
+                    numberOfSpots={parkingSpaceCount}
                     parkingStateHandler={handleParkingSpotInteraction}
                     available={availabilityData}
                 />
