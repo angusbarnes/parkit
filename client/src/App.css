@@ -22,6 +22,37 @@
   }
 }
 
+/* Modal.css */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff; /* White background */
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  position: relative;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
 
 /* Modal styles */
 .modal {
@@ -41,7 +72,7 @@
   display: flex;
 }
 
-.modal-content {
+.modal-content-booking {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -65,17 +96,15 @@ input {
 }
 
 button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
+  color: black;
+  padding: 2px;
+  background-color: transparent;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #252525;
 }
 
 /* Close button (X) */
@@ -86,145 +115,4 @@ button:hover {
 
 .modal-content button:last-child:hover {
   background-color: #999;
-}
-
-
-/* Navbar styles */
-.navbar {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 0;
-}
-
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1400px;
-  padding-left: 40px;
-  padding-right: 40px;
-  margin: 0 auto;
-}
-
-.navbar-brand a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-.navbar-brand img {
-  width: 160px; /* Adjust the width as needed */
-  height: auto;
-  vertical-align:middle;
-  margin-right: 10px; /* Adjust the margin as needed */
-}
-
-
-.navbar-links {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar-links a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 15px;
-  font-size: 1rem;
-  transition: color 0.3s ease-in-out;
-}
-
-.navbar-links a:hover {
-  color: #007bff;
-}
-
-/* Navbar toggle button styles */
-.navbar-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.bar {
-  width: 25px;
-  height: 3px;
-  background-color: #fff;
-  margin: 5px 0;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Media query for responsive design */
-@media screen and (max-width: 768px) {
-  .navbar-links {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    background-color: #333;
-    z-index: 1000;
-  }
-
-  .navbar-links.open {
-    display: flex;
-  }
-
-  .navbar-toggle {
-    display: flex;
-  }
-
-  /* Content styles */
-.content-container {
-  background-color: white; /* Slightly off-white or very light gray */
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
-  padding: 20px;
-  margin: auto;
-  margin-top: 20px;
-  width: 85%;
-}
-
-.content-container-dark {
-  background-color: #333333; /* Slightly off-white or very light gray */
-  color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  margin: auto;
-  margin-top: 20px;
-  width: 85%;
-}
-}
-
-/* Content styles */
-.content-container {
-  background-color: white; /* Slightly off-white or very light gray */
-  border-radius: 10px;
-  max-width: 1400px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
-  padding: 20px;
-  margin: auto;
-  margin-top: 20px;
-  width: 90%;
-}
-
-.content-container-dark {
-  background-color: #333333; /* Slightly off-white or very light gray */
-  color: #fff;
-  max-width: 1400px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  margin: auto;
-  margin-top: 20px;
-  width: 90%;
 }

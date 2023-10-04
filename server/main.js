@@ -1,7 +1,7 @@
 const express = require("express");
 const WebSocket = require("ws");
 const connection_handler = require("./ws_connection_handler.js");
-const path = require('path');
+const path = require("path");
 const app = express();
 const port = 80;
 
@@ -21,18 +21,26 @@ const STATE_CODE_RESERVED = 3;
 
 let cellStates = Array(10).fill(STATE_CODE_EMPTY);
 
+let sendStateUpdate = (ws, cell_states) => {
+    ws.send(JSON.stringify({ type: "STATE_UPDATE", data: cell_states }));
+};
+
+let sendConnectionCount = () => {
+    wss.clients.forEach((ws) => {
+        ws.send(JSON.stringify({ type: "CONNECTION_COUNT", data: wss.clients.size }));
+    });
+}
+
 wss.on("connection", (ws, req) => {
     // Send the current state to the newly connected client
-    ws.send(JSON.stringify({ type: "INITIAL_STATE", data: cellStates }));
+    sendStateUpdate(ws, cellStates);
 
     const clientIP = req.connection.remoteAddress;
-    console.log(`Client connected from IP: ${clientIP}. Client was sent INITIAL_STATE package. Now there are ${wss.clients.size} connected clients`);
+    console.log(
+        `Client connected from IP: ${clientIP}. Client was sent INITIAL_STATE package. Now there are ${wss.clients.size} connected clients`
+    );
 
-    wss.clients.forEach((ws) => {
-        ws.send(
-            JSON.stringify({ type: "CONNECTION_COUNT", data: wss.clients.size })
-        );
-    })
+    sendConnectionCount();
 
     // Handle messages from clients
     ws.on("message", (message) => {
@@ -51,33 +59,22 @@ wss.on("connection", (ws, req) => {
                 // Broadcast the updated state to all connected clients
                 wss.clients.forEach((client) => {
                     if (client.readyState === WebSocket.OPEN) {
-                        client.send(
-                            JSON.stringify({ type: "STATE_UPDATE", data: cellStates })
-                        );
+                        sendStateUpdate(client, cellStates);
                     }
                 });
             }
-        } 
-        else if (type === "POLL_STATE") {
-            ws.send(
-                JSON.stringify({ type: "STATE_UPDATE", cells: cellStates })
-            );
-        } 
-        else if (type == "RESET_STATE") {
+        } else if (type === "POLL_STATE") {
+            ws.send(JSON.stringify({ type: "STATE_UPDATE", cells: cellStates }));
+        } else if (type == "RESET_STATE") {
             cellStates = Array(10).fill(STATE_CODE_EMPTY);
-            ws.send(
-                JSON.stringify({ type: "STATE_UPDATE", cells: cellStates })
-            );
+            ws.send(JSON.stringify({ type: "STATE_UPDATE", cells: cellStates }));
         }
     });
 
     ws.on("close", () => {
         console.log(`Client Disconnected. Now there are ${wss.clients.size} remaining clients`);
         wss.clients.forEach((ws) => {
-            ws.send(
-                JSON.stringify({ type: "CONNECTION_COUNT", data: wss.clients.size })
-            );
+            ws.send(JSON.stringify({ type: "CONNECTION_COUNT", data: wss.clients.size }));
         });
-    })
+    });
 });
-
