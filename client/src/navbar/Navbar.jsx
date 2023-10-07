@@ -21,7 +21,7 @@ const Navbar = ({ logo, resetButtonCallback }) => {
           <a href="/" onClick={resetButtonCallback}>
             Reset
           </a>
-          <a href="/contact">Contact</a>
+          <a href="/Dashboard">Dashboard</a>
         </div>
         <div className="navbar-toggle" onClick={toggleNav}>
           <div className={`bar ${isNavOpen ? "open" : ""}`}></div>

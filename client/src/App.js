@@ -13,19 +13,7 @@ function App() {
   const [socketUrl, setSocketUrl] = useState("ws://parkit.cc:80");
 
   // { sendMessage, lastMessage, readyState }
-  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
-
-  let eventHandlers = {}
-
-  const websocket = {
-    send: (message) => {
-      sendMessage(message);
-    },
-    status: readyState,
-    on: (type, callback) => {
-      eventHandlers[type].push(callback);
-    }
-  }
+  const websocket = useWebSocket(socketUrl);
 
   //sendMessage(JSON.stringify({type: "REQUEST_DB_SIZE"}))
 

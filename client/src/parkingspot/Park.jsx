@@ -46,7 +46,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
           <div className="button-group">
             <Button
               disabled={state}
-              color={"blue"}
+              color={"RoyalBlue"}
               label={"Book"}
               onClick={() => {
                 bookingModal.open();
@@ -54,7 +54,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
             />
             <Button
               disabled={state}
-              color={"red"}
+              color={"Tomato"}
               label={"Cancel"}
               onClick={() => {
                 toggleStateFunction(id, false);

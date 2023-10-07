@@ -2,7 +2,7 @@
 @media screen and (max-width: 768px) {
   /* Content styles */
   .content-container {
-    background-color: white; /* Slightly off-white or very light gray */
+    background-color: rgb(244, 245, 250); /* Slightly off-white or very light gray */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
     padding: 20px;
@@ -12,7 +12,7 @@
   }
 
   .content-container-dark {
-    background-color: #333333; /* Slightly off-white or very light gray */
+    background-color: darkslateblue; /* Slightly off-white or very light gray */
     color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
@@ -28,7 +28,7 @@
 
 /* Content styles */
 .content-container {
-  background-color: white; /* Slightly off-white or very light gray */
+  background-color: rgb(244, 245, 250); /* Slightly off-white or very light gray */
   border-radius: 10px;
   max-width: 1400px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
@@ -39,7 +39,7 @@
 }
 
 .content-container-dark {
-  background-color: #333333; /* Slightly off-white or very light gray */
+  background-color: darkslateblue; /* Slightly off-white or very light gray */
   color: #fff;
   max-width: 1400px;
   border-radius: 10px;
