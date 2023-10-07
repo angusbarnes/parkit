@@ -8,8 +8,9 @@ import QRCode from "react-qr-code";
 const Park = ({ id, toggleStateFunction, state }) => {
   const qrModal = useModal();
   const bookingModal = useModal();
+  const cancelModal = useModal();
 
-  const [plate, setPlate] = useState("null");
+  const [plate, setPlate] = useState("");
 
   return (
     <div className="grid-item">
@@ -30,11 +31,28 @@ const Park = ({ id, toggleStateFunction, state }) => {
           <input type="text" value={plate} onChange={(e) => setPlate(e.target.value)} />
           <div className="container" style={{ padding: 15, paddingBottom: 0 }}>
             <Button
-              color={"blue"}
+              color={"RoyalBlue"}
               label={"Book"}
               onClick={() => {
+                if(!plate) return;
                 bookingModal.close();
-                toggleStateFunction(id, true);
+                toggleStateFunction(id, true, plate);
+              }}
+            />
+          </div>
+        </Modal>
+        <Modal modalState={cancelModal}>
+          <h3 style={{ width: 350 }}>Book this park</h3>
+          <label style={{ paddingTop: 20 }}>Please Enter your license plate number:</label>
+          <input type="text" value={plate} onChange={(e) => setPlate(e.target.value)} />
+          <div className="container" style={{ padding: 15, paddingBottom: 0 }}>
+            <Button
+              color={"Tomato"}
+              label={"Cancel"}
+              onClick={() => {
+                if(!plate) return;
+                cancelModal.close();
+                toggleStateFunction(id, false, plate);
               }}
             />
           </div>
@@ -57,7 +75,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
               color={"Tomato"}
               label={"Cancel"}
               onClick={() => {
-                toggleStateFunction(id, false);
+                cancelModal.open();
               }}
             />
             <button

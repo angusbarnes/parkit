@@ -1,8 +1,18 @@
 import DeviceListing from "../devicelisting/DeviceListing";
 import ContentBox from "../layout/ContentBox";
-import Button from "../layout/Button"
+import Button from "../layout/Button";
+import { useEffect, useState } from "react";
 
-function Dashboard() {
+function Dashboard({ websocket }) {
+
+  const [spotCount, setSpotCount] = useState(10);
+  useEffect(() => {
+    if (websocket.lastMessage !== null) {
+      const { type, data } = JSON.parse(websocket.lastMessage.data);
+      console.log(`Message Received: ${type} with ${data}`);
+    }
+  }, [websocket.lastMessage]);
+
   const devicesIcons = {
     server: (
       <svg
@@ -87,10 +97,19 @@ function Dashboard() {
           <span style={{ fontSize: 20 }}> Admin Dashboard:</span>
         </h3>
         <div className="button-group">
-        <Button label={"Reset State"} color={"lightcoral"}></Button>
-        <Button label={"Restart Server"} color={"skyblue"}></Button>
+          <Button
+            label={"Reset State"}
+            onClick={() => {
+              websocket.sendMessage(JSON.stringify({ type: "RESET_STATE" }));
+            }}
+            color={"lightcoral"}
+          ></Button>
+          <Button label={"Restart Server"} color={"skyblue"}></Button>
+          <input type="number" min="1" max="100" style={{width: 50}} onChange={(e) => setSpotCount(e.target.value)}></input>
+          <Button label={"Update Spot Allocation"} color={"slategrey"} onClick={()=>{
+            websocket.sendMessage(JSON.stringify({"type": "DB_RESIZE_EVENT", "body" : { "count": spotCount}}))
+          }}></Button>
         </div>
-
       </ContentBox>
       <ContentBox>
         <h3>

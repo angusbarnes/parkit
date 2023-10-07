@@ -20,7 +20,7 @@ function ParkingSpotList({ numberOfSpots, parkingStateHandler, available }) {
           key={id}
           id={id}
           toggleStateFunction={parkingStateHandler}
-          state={available[id] == 1 ? false : true}
+          state={available[id]["state"] == 1 ? false : true}
         />
       ))}
     </GridContainer>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./navbar.css";
 
-const Navbar = ({ logo, resetButtonCallback }) => {
+const Navbar = ({ logo }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const toggleNav = () => {
@@ -12,16 +13,13 @@ const Navbar = ({ logo, resetButtonCallback }) => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-brand">
-          <a href="/">
+          <Link to="/">
             <img src={logo}></img>
-          </a>
+          </Link>
         </div>
         <div className={`navbar-links ${isNavOpen ? "open" : ""}`}>
-          <a href="/">Home</a>
-          <a href="/" onClick={resetButtonCallback}>
-            Reset
-          </a>
-          <a href="/Dashboard">Dashboard</a>
+          <Link to="/">Home</Link>
+          <Link to="/Dashboard">Dashboard</Link>
         </div>
         <div className="navbar-toggle" onClick={toggleNav}>
           <div className={`bar ${isNavOpen ? "open" : ""}`}></div>

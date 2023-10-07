@@ -9,8 +9,9 @@ import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
 import Home from "./Pages/Home"
 
+
 function App() {
-  const [socketUrl, setSocketUrl] = useState("ws://parkit.cc:80");
+  const [socketUrl, setSocketUrl] = useState("ws://localhost:80");
 
   // { sendMessage, lastMessage, readyState }
   const websocket = useWebSocket(socketUrl);
@@ -23,7 +24,7 @@ function App() {
         <Route path="/" element={<Navigation websocket={websocket} />}>
           <Route index element={<Home websocket={websocket} />} />
           {/* <Route path="about" element={<About />} /> */}
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard websocket={websocket}/>} />
 
           {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
@@ -41,9 +42,6 @@ function Navigation({ websocket }) {
     <>
       <Navbar
         logo={logo}
-        resetButtonCallback={() => {
-          websocket.sendMessage(JSON.stringify({ type: "RESET_STATE" }));
-        }}
       ></Navbar>
       <Modal modalState={errorModal} style={{ backgroundColor: "#F08080" }}>
         <h3 style={{ color: "white" }}>

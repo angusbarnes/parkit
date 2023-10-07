@@ -72,8 +72,8 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus }) => {
         </div>
         <div className="right-half">
           <div className="buttons-parent">
-            <span>{settingsIcon}</span>
-            <Button color={"MediumSpringGreen"} label={"Assign"}></Button>
+            <button><span>{settingsIcon}</span></button>
+            <Button color={"DarkSeaGreen"} label={"Assign"}></Button>
           </div>
         </div>
       </div>

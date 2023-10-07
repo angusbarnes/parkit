@@ -1,11 +1,11 @@
 import ContentBox from "../layout/ContentBox";
-import ParkingSpotList from "../parkingspot/ParkingSpotList"
+import ParkingSpotList from "../parkingspot/ParkingSpotList";
 import React, { useState, useCallback, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 function Home({ websocket }) {
   const [messageHistory, setMessageHistory] = useState([]);
-  const [availabilityData, setAvailabilityData] = useState([]);
+  const [availabilityData, setAvailabilityData] = useState(Array(10).fill({state: 0, plate: ""}));
   const [connectionCount, setConnectionCount] = useState(0);
   const [parkingSpaceCount, setParkingSpaceCount] = useState(10);
 
@@ -26,7 +26,10 @@ function Home({ websocket }) {
           break;
 
         case "DB_SIZE_RESPONSE":
-          setParkingSpaceCount(data);
+          const {count, cells} = data;
+          console.log(`DB RESIZE: ${count}, ${cells}`)
+          setParkingSpaceCount(count);
+          setAvailabilityData(cells)
           break;
 
         default:
@@ -36,25 +39,14 @@ function Home({ websocket }) {
     }
   }, [websocket.lastMessage, setMessageHistory]);
 
-  const handleClickSendMessage = useCallback(
-    (id) =>
-      websocket.sendMessage(
-        JSON.stringify({
-          type: "UPDATE_CELL_REQUEST",
-          cell_id: id,
-          body: { cell_state: 1 },
-        })
-      ),
-    []
-  );
 
   const handleParkingSpotInteraction = useCallback(
-    (id, value) =>
+    (id, value, plate) =>
       websocket.sendMessage(
         JSON.stringify({
           type: "UPDATE_CELL_REQUEST",
           cell_id: id,
-          body: { cell_state: value ? 1 : 0 },
+          body: { cell_state: value ? 1 : 0, plateNumber: plate },
         })
       ),
     []
