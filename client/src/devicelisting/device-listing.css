@@ -1,0 +1,33 @@
+.device-listing {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 10px; /* Adjust as needed to create space between device listings */
+  }
+  
+  .icon,
+  .settings-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  .device-info {
+    flex-grow: 1; /* This allows the device info to take up the remaining space */
+  }
+  
+  .device-name {
+    font-weight: bold;
+  }
+  
+  .online-status {
+    color: #4CAF50; /* Green color for online status */
+  }
+  
+  .offline {
+    color: #F44336; /* Red color for offline status */
+  }
+  

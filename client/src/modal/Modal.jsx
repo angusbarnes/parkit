@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import './model.css'; // Import your modal styles
-import { useModal } from './useModal';
+import React, { useState } from "react";
+import "./model.css"; // Import your modal styles
+import { useModal } from "./useModal";
 
 const Modal = ({ modalState, onClose = null, style, children }) => {
   if (!modalState.status) {
@@ -10,7 +10,13 @@ const Modal = ({ modalState, onClose = null, style, children }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" style={style} onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-button" onClick={() => {modalState.close(); onClose?.()}}>
+        <button
+          className="modal-close-button"
+          onClick={() => {
+            modalState.close();
+            onClose?.();
+          }}
+        >
           &times;
         </button>
         {children}

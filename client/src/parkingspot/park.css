@@ -1,64 +1,63 @@
 .park {
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
-    min-width: 300px;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
+  min-width: 300px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .park h3 {
-    text-align: center;
-    margin: 5px;
+  text-align: center;
+  margin: 5px;
 }
 
 .park h4 {
-    text-align: center;
-    margin: 5px;
+  text-align: center;
+  margin: 5px;
 }
 
 .park p {
-    margin: 5px;
-    text-align: justify;
+  margin: 5px;
+  text-align: justify;
 }
 
 .park button {
-    padding: 0; 
-    border: none; 
-    background: none; 
-    cursor: pointer;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
 .svg-icon {
-    transition: color 0.3s ease;
-    display: block;
-    width: 40px; 
-    height: auto; 
+  transition: color 0.3s ease;
+  display: block;
+  width: 40px;
+  height: auto;
 }
-  
-  /* Hover styles for the SVG */
+
+/* Hover styles for the SVG */
 .svg-icon:hover {
-    color: blue; /* Change the color to your desired hover color */
+  color: blue; /* Change the color to your desired hover color */
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto; /* Set a height for the container, adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto; /* Set a height for the container, adjust as needed */
 }
 
 .button-group {
-    display: flex;
+  display: flex;
 }
-  
 
 .grid-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%; /* Occupy full height of the grid cell */
-    /* Additional styling if needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Occupy full height of the grid cell */
+  /* Additional styling if needed */
 }

@@ -1,15 +1,14 @@
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    max-width: 100%; /* Optional: Set a maximum width for the grid */
-    margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 100%; /* Optional: Set a maximum width for the grid */
+  margin: auto;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Single column on smaller screens */
   }
-    
-  /* Media query for smaller screens */
-  @media (max-width: 600px) {
-    .grid-container {
-      grid-template-columns: 1fr; /* Single column on smaller screens */
-    }
-  }
-  
+}
