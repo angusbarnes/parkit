@@ -107,9 +107,9 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device 
   return (
     <div className="device-listing">
       <Modal modalState={settingsModal}>
-        <p>Device Ram: {deviceStats ? deviceStats.ram : "N/A"}</p>
-        <p>Device CPU: {deviceStats ?deviceStats.cpu : "N/A"}</p>
-        <p>Device temp: {deviceStats ? deviceStats.temp : "N/A"}</p>
+        <p>Device Ram: {JSON.stringify(deviceStats)}</p>
+        <p>Device CPU: {JSON.stringify(deviceStats)}</p>
+        <p>Device temp: {JSON.stringify(deviceStats)}</p>
       </Modal>
       <div className="settings-icon">{deviceIcon}</div>
       <div className="device-info container">
