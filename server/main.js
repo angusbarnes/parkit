@@ -60,11 +60,10 @@ app.get("/api/spotcount", (req, res) => {
 app.post("/api/stat", (req, res) => {
     // Access JSON data from the request body
     const jsonData = req.body;
-  
-    devices.push(jsonData);
 
-    const foundDevice = devices.find(device => device.id === id);
+    const foundDevice = devices.find(device => device.id === jsonData.id);
     if (foundDevice && foundDevice.stat) {
+        console.log(`Requested states for ${jsonData.id}: ${JSON.stringify(foundDevice.stat)}`)
         res.json(foundDevice.stat);
     } else {
         res.json(null);
