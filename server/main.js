@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 const server = app.listen(port, () => {
-  console.log(`Server started on http://localhost:${port}`);
+  console.log(`Server started on http://parkit.cc:${port}`);
 });
 
 // WebSocket server
@@ -56,6 +56,21 @@ app.post("/api/dereg", (req, res) => {
 app.get("/api/spotcount", (req, res) => {
   res.send({ count: cellCount });
 });
+
+app.post("/api/stat", (req, res) => {
+    // Access JSON data from the request body
+    const jsonData = req.body;
+  
+    devices.push(jsonData);
+
+    const foundDevice = devices.find(device => device.id === id);
+    if (foundDevice && foundDevice.stat) {
+        res.json(foundDevice.stat);
+    } else {
+        res.json(null);
+    }
+    
+  });
 
 app.post("/api/registerdevice", (req, res) => {
   // Access JSON data from the request body
@@ -170,7 +185,11 @@ wss.on("connection", (ws, req) => {
         }
       });
     } else if (type == "DEVICE_STAT") {
-      const {id, temp, cpu, ram} = data;
+      const {id, temp, cpu, ram} = body;
+      const foundDevice = devices.find(device => device.id === id);
+      if (foundDevice) {
+        foundDevice.stat = {temp, cpu, ram};
+      }
     }
   });
 

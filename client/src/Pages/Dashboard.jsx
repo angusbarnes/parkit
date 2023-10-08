@@ -40,7 +40,7 @@ function Dashboard({ websocket }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:80/api/spotcount");
+        const response = await fetch("http://parkit.cc:80/api/spotcount");
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -233,6 +233,7 @@ function Dashboard({ websocket }) {
         <p>New devices will show up here for assignment</p>
         {deviceList.filter((device) => !device.known).map((device) => (
           <DeviceListing
+            device={device}
             deviceName={device.name}
             key={device.id}
             deviceIP="Cloud Relay Enabled"

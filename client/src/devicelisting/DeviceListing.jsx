@@ -1,8 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import "./device-listing.css";
 import Button from "../layout/Button"
+import Modal from "../modal/Modal";
+import { useModal } from "../modal/useModal";
 
-const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, known = true }) => {
+const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device = null, known = true }) => {
+
+  const settingsModal = useModal();
+  const [deviceStats, setDeviceStats] = useState(null)
+
+  if(device) {
+    useEffect(() => {
+      const body = {id: device.id}
+      const fetchData = async () => {
+        try {
+          const response = await fetch("http://parkit.cc:80/api/devicelist",  {
+            Method: 'POST',
+            Headers: {
+              Accept: 'application.json',
+              'Content-Type': 'application/json'
+            },
+            Body: body,
+            Cache: 'default'
+          });
+  
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+  
+          const result = await response.json();
+          console.log(`Device List Request Succeeded: ${JSON.stringify(result)}`);
+          if(result) {
+            setDeviceStats(result);
+          }
+
+        } catch (error) {
+          //setError(error);
+        } finally {
+          //setLoading(false);
+        }
+      };
+  
+      fetchData();
+  
+      // Set up periodic fetch using setInterval
+      const intervalId = setInterval(() => {
+        fetchData();
+      }, 5000); // Adjust the interval as needed (e.g., fetch every 5 seconds)
+  
+      // Cleanup function to clear the interval when the component unmounts
+      return () => clearInterval(intervalId);
+    }, []);
+  }
+
   const onlineIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +107,11 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, known =
 
   return (
     <div className="device-listing">
+      <Modal modalState={settingsModal}>
+        <p>Device Ram: {deviceStats.ram}</p>
+        <p>Device CPU: {deviceStats.CPU}</p>
+        <p>Device temp: {deviceStats.temp}</p>
+      </Modal>
       <div className="settings-icon">{deviceIcon}</div>
       <div className="device-info container">
         <div className="left-half">
@@ -72,7 +127,7 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, known =
         </div>
         <div className="right-half">
           <div className="buttons-parent">
-            <button><span>{settingsIcon}</span></button>
+            <button onClick={() => {settingsModal.open()}}><span>{settingsIcon}</span></button>
             <Button color={known ? "Tomato": "DarkSeaGreen"} label={known ? "Remove": "Assign"}></Button>
           </div>
         </div>
