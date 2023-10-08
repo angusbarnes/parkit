@@ -15,7 +15,7 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device 
       const body = { id: device.id }
       const fetchData = async () => {
         try {
-          const response = await fetch("http://parkit.cc:80/api/devicelist", {
+          const response = await fetch("http://parkit.cc:80/api/stat", {
             Method: 'POST',
             Headers: {
               Accept: 'application.json',
