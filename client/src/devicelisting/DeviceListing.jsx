@@ -11,45 +11,48 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device 
   const [deviceStats, setDeviceStats] = useState(null)
 
   useEffect(() => {
-    const body = { id: device.id }
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://parkit.cc:80/api/devicelist", {
-          Method: 'POST',
-          Headers: {
-            Accept: 'application.json',
-            'Content-Type': 'application/json'
-          },
-          Body: body,
-          Cache: 'default'
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+    if (device) {
+      const body = { id: device.id }
+      const fetchData = async () => {
+        try {
+          const response = await fetch("http://parkit.cc:80/api/devicelist", {
+            Method: 'POST',
+            Headers: {
+              Accept: 'application.json',
+              'Content-Type': 'application/json'
+            },
+            Body: body,
+            Cache: 'default'
+          });
+  
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+  
+          const result = await response.json();
+          console.log(`Device List Request Succeeded: ${JSON.stringify(result)}`);
+          if (result) {
+            setDeviceStats(result);
+          }
+  
+        } catch (error) {
+          //setError(error);
+        } finally {
+          //setLoading(false);
         }
-
-        const result = await response.json();
-        console.log(`Device List Request Succeeded: ${JSON.stringify(result)}`);
-        if (result) {
-          setDeviceStats(result);
-        }
-
-      } catch (error) {
-        //setError(error);
-      } finally {
-        //setLoading(false);
-      }
-    };
-
-    fetchData();
-
-    // Set up periodic fetch using setInterval
-    const intervalId = setInterval(() => {
+      };
+  
       fetchData();
-    }, 5000); // Adjust the interval as needed (e.g., fetch every 5 seconds)
+  
+      // Set up periodic fetch using setInterval
+      const intervalId = setInterval(() => {
+        fetchData();
+      }, 5000); // Adjust the interval as needed (e.g., fetch every 5 seconds)
+  
+      // Cleanup function to clear the interval when the component unmounts
+      return () => clearInterval(intervalId);
+    }
 
-    // Cleanup function to clear the interval when the component unmounts
-    return () => clearInterval(intervalId);
   }, []);
 
   const onlineIcon = (
