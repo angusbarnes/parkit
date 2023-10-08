@@ -4,32 +4,27 @@ import React, { useState, useCallback, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 function Home({ websocket }) {
-  const [messageHistory, setMessageHistory] = useState([]);
   const [availabilityData, setAvailabilityData] = useState(Array(10).fill({state: 0, plate: ""}));
   const [connectionCount, setConnectionCount] = useState(0);
   const [parkingSpaceCount, setParkingSpaceCount] = useState(10);
 
+  const [parkingState, setParkingState] = useState({count: 0, states: []})
+
   useEffect(() => {
+
     if (websocket.lastMessage !== null) {
       const { type, data } = JSON.parse(websocket.lastMessage.data);
       console.log(`Message Received: ${type} with ${data}`);
 
       switch (type) {
         case "STATE_UPDATE":
-        case "INITIAL_STATE":
-          setAvailabilityData(data);
-          console.log("availabilityData updated on parent.");
+          const {count, cells} = data;
+          setParkingState({count: count, states: cells});
+          console.log(`New States Received: Count: ${count}, ${cells}`)
           break;
 
         case "CONNECTION_COUNT":
           setConnectionCount(data);
-          break;
-
-        case "DB_SIZE_RESPONSE":
-          const {count, cells} = data;
-          console.log(`DB RESIZE: ${count}, ${cells}`)
-          setParkingSpaceCount(count);
-          setAvailabilityData(cells)
           break;
 
         default:
@@ -37,8 +32,12 @@ function Home({ websocket }) {
           break;
       }
     }
-  }, [websocket.lastMessage, setMessageHistory]);
+  }, [websocket.lastMessage, setParkingState, setConnectionCount]);
 
+
+  useEffect(()=> {
+    websocket.sendMessage(JSON.stringify({type: "POLL_STATE"}))
+  }, [])
 
   const handleParkingSpotInteraction = useCallback(
     (id, value, plate) =>
@@ -59,6 +58,11 @@ function Home({ websocket }) {
     [ReadyState.CLOSED]: "Closed",
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[websocket.readyState];
+
+  if (parkingState.count == 0) {
+    return <ContentBox><h3>There are currently no parks configured for this car park</h3></ContentBox>
+  }
+
   return (
     <>
       <ContentBox>
@@ -66,9 +70,10 @@ function Home({ websocket }) {
           <b>Please Select from the available slots:</b>
         </p>
         <ParkingSpotList
-          numberOfSpots={parkingSpaceCount}
+          numberOfSpots={parkingState.count}
           parkingStateHandler={handleParkingSpotInteraction}
-          available={availabilityData}
+          available={parkingState.states}
+          parkingState={parkingState}
         />
       </ContentBox>
       <ContentBox color="-dark">

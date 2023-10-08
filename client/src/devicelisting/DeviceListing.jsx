@@ -2,7 +2,7 @@ import React from "react";
 import "./device-listing.css";
 import Button from "../layout/Button"
 
-const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus }) => {
+const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, known = true }) => {
   const onlineIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus }) => {
           <p className="device-name">{deviceName}
           <span className={`online-status ${onlineStatus ? "online" : "offline"}`}>
               {onlineStatus ? onlineIcon : offlineIcon}
-              {onlineStatus ? "Connection Secure" : "Offline"}
+              {onlineStatus ? "Connected" : "Offline"}
             </span>
           </p>
           <p className="device-ip">
@@ -73,7 +73,7 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus }) => {
         <div className="right-half">
           <div className="buttons-parent">
             <button><span>{settingsIcon}</span></button>
-            <Button color={"DarkSeaGreen"} label={"Assign"}></Button>
+            <Button color={known ? "Tomato": "DarkSeaGreen"} label={known ? "Remove": "Assign"}></Button>
           </div>
         </div>
       </div>

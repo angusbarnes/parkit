@@ -4,14 +4,57 @@ import Button from "../layout/Button";
 import { useEffect, useState } from "react";
 
 function Dashboard({ websocket }) {
-
-  const [spotCount, setSpotCount] = useState(10);
+  const [spotCount, setSpotCount] = useState(0);
+  const [deviceList, setDeviceList] = useState([]);
   useEffect(() => {
-    if (websocket.lastMessage !== null) {
-      const { type, data } = JSON.parse(websocket.lastMessage.data);
-      console.log(`Message Received: ${type} with ${data}`);
-    }
-  }, [websocket.lastMessage]);
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:80/api/devicelist");
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const result = await response.json();
+        console.log(`Device List Request Succeeded: ${JSON.stringify(result.devices)}`);
+        setDeviceList(result.devices);
+      } catch (error) {
+        //setError(error);
+      } finally {
+        //setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    // Set up periodic fetch using setInterval
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 5000); // Adjust the interval as needed (e.g., fetch every 5 seconds)
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:80/api/spotcount");
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const result = await response.json();
+        setSpotCount(result.count);
+      } catch (error) {
+        //setError(error);
+      } 
+    };
+
+    fetchData();
+  }, []);
 
   const devicesIcons = {
     server: (
@@ -105,10 +148,23 @@ function Dashboard({ websocket }) {
             color={"lightcoral"}
           ></Button>
           <Button label={"Restart Server"} color={"skyblue"}></Button>
-          <input type="number" min="1" max="100" style={{width: 50}} onChange={(e) => setSpotCount(e.target.value)}></input>
-          <Button label={"Update Spot Allocation"} color={"slategrey"} onClick={()=>{
-            websocket.sendMessage(JSON.stringify({"type": "DB_RESIZE_EVENT", "body" : { "count": spotCount}}))
-          }}></Button>
+          <input
+            type="number"
+            min="1"
+            max="100"
+            style={{ width: 50 }}
+            value={spotCount}
+            onChange={(e) => setSpotCount(e.target.value)}
+          ></input>
+          <Button
+            label={"Update Spot Allocation"}
+            color={"slategrey"}
+            onClick={() => {
+              websocket.sendMessage(
+                JSON.stringify({ type: "DB_RESIZE_EVENT", body: { count: spotCount } })
+              );
+            }}
+          ></Button>
         </div>
       </ContentBox>
       <ContentBox>
@@ -147,6 +203,16 @@ function Dashboard({ websocket }) {
           deviceIcon={devicesIcons.gateway}
           onlineStatus={false}
         ></DeviceListing>
+        {deviceList.filter((device) => device.known).map((device) => (
+          <DeviceListing
+            deviceName={device.name}
+            key={device.id}
+            deviceIP="Cloud Relay Enabled"
+            deviceIcon={devicesIcons.parkitpro}
+            onlineStatus={device.connected}
+            known={true}
+          >test</DeviceListing>
+        ))}
       </ContentBox>
       <ContentBox>
         <h3>
@@ -165,12 +231,16 @@ function Dashboard({ websocket }) {
           <span style={{ fontSize: 20 }}> Unknown Devices:</span>
         </h3>
         <p>New devices will show up here for assignment</p>
-        <DeviceListing
-          deviceName="SmartPark Pro"
-          deviceIP="Cloud Relay Enabled"
-          deviceIcon={devicesIcons.parkitpro}
-          onlineStatus="online"
-        ></DeviceListing>
+        {deviceList.filter((device) => !device.known).map((device) => (
+          <DeviceListing
+            deviceName={device.name}
+            key={device.id}
+            deviceIP="Cloud Relay Enabled"
+            deviceIcon={devicesIcons.parkitpro}
+            onlineStatus={device.connected}
+            known={false}
+          >test</DeviceListing>
+        ))}
       </ContentBox>
     </>
   );

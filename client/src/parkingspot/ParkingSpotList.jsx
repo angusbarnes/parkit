@@ -2,9 +2,9 @@ import GridContainer from "../layout/GridContainer";
 import React, { useState, useCallback, useEffect } from "react";
 import Park from "./Park";
 
-function ParkingSpotList({ numberOfSpots, parkingStateHandler, available }) {
+function ParkingSpotList({ numberOfSpots, parkingStateHandler, available, parkingState }) {
   // Create an array of parking spot IDs based on the numberOfSpots configuration
-  const parkingSpotIds = Array.from({ length: numberOfSpots }, (_, index) => index);
+  const parkingSpotIds = Array.from({ length: parkingState.count }, (_, index) => index);
 
   console.log(`Array: ${available}`);
   return (
@@ -20,7 +20,7 @@ function ParkingSpotList({ numberOfSpots, parkingStateHandler, available }) {
           key={id}
           id={id}
           toggleStateFunction={parkingStateHandler}
-          state={available[id]["state"] == 1 ? false : true}
+          state={parkingState.states[id]["state"] == 1 ? false : true}
         />
       ))}
     </GridContainer>
