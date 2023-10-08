@@ -3,6 +3,7 @@ import "./device-listing.css";
 import Button from "../layout/Button"
 import Modal from "../modal/Modal";
 import { useModal } from "../modal/useModal";
+import { useEffect } from "react";
 
 const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device = null, known = true }) => {
 
