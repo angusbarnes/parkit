@@ -9,7 +9,7 @@ function Dashboard({ websocket }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:80/api/devicelist");
+        const response = await fetch("http://parkit.cc:80/api/devicelist");
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
