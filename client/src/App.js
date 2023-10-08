@@ -11,7 +11,7 @@ import Home from "./Pages/Home"
 
 
 function App() {
-  const [socketUrl, setSocketUrl] = useState("ws://localhost:80");
+  const [socketUrl, setSocketUrl] = useState("ws://parkit.cc:80");
 
   // { sendMessage, lastMessage, readyState }
   const websocket = useWebSocket(socketUrl);
