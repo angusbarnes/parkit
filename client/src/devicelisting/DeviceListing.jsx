@@ -58,7 +58,7 @@ const DeviceListing = ({
       // Cleanup function to clear the interval when the component unmounts
       return () => clearInterval(intervalId);
     }
-  }, []);
+  }, [setDeviceStats]);
 
   const onlineIcon = (
     <svg
