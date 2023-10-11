@@ -8,10 +8,11 @@ import Modal from "./modal/Modal";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
 import Home from "./Pages/Home"
+import { host } from "./ipspec";
 
 
 function App() {
-  const [socketUrl, setSocketUrl] = useState("ws://parkit.cc:80");
+  const [socketUrl, setSocketUrl] = useState(`ws://${host}:80`);
 
   // { sendMessage, lastMessage, readyState }
   const websocket = useWebSocket(socketUrl);

@@ -2,6 +2,7 @@ import DeviceListing from "../devicelisting/DeviceListing";
 import ContentBox from "../layout/ContentBox";
 import Button from "../layout/Button";
 import { useEffect, useState } from "react";
+import { host } from "../ipspec";
 
 function Dashboard({ websocket }) {
   const [spotCount, setSpotCount] = useState(0);
@@ -9,7 +10,7 @@ function Dashboard({ websocket }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://parkit.cc:80/api/devicelist");
+        const response = await fetch(`http://${host}:80/api/devicelist`);
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -40,7 +41,7 @@ function Dashboard({ websocket }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://parkit.cc:80/api/spotcount");
+        const response = await fetch(`http://${host}:80/api/spotcount`);
 
         if (!response.ok) {
           throw new Error("Network response was not ok");

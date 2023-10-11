@@ -1,58 +1,63 @@
 import React, { useState } from "react";
 import "./device-listing.css";
-import Button from "../layout/Button"
+import Button from "../layout/Button";
 import Modal from "../modal/Modal";
 import { useModal } from "../modal/useModal";
 import { useEffect } from "react";
+import { host } from "../ipspec";
 
-const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device = null, known = true }) => {
-
+const DeviceListing = ({
+  deviceName,
+  deviceIP,
+  deviceIcon,
+  onlineStatus,
+  device = null,
+  known = true,
+}) => {
   const settingsModal = useModal();
-  const [deviceStats, setDeviceStats] = useState(null)
+  const [deviceStats, setDeviceStats] = useState(null);
 
   useEffect(() => {
     if (device) {
-      const body = { id: device.id }
+      const body = { id: device.id };
       const fetchData = async () => {
         try {
-          const response = await fetch("http://parkit.cc:80/api/stat", {
-            method: 'post',
-            Headers: {
-              Accept: 'application.json',
-              'Content-Type': 'application/json'
+          const response = await fetch(`http://${host}:80/api/stat`, {
+            method: "post",
+            headers: {
+              Accept: "application.json",
+              "Content-Type": "application/json",
             },
-            Body: JSON.stringify(body),
-            Cache: 'default'
+            body: JSON.stringify(body),
+            cache: "default",
           });
-  
+
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-  
+
           const result = await response.json();
           console.log(`Device List Request Succeeded: ${JSON.stringify(result)}`);
           if (result) {
             setDeviceStats(result);
           }
-  
         } catch (error) {
           //setError(error);
         } finally {
           //setLoading(false);
         }
       };
-  
+
       fetchData();
-  
+
       // Set up periodic fetch using setInterval
       const intervalId = setInterval(() => {
         fetchData();
-      }, 5000); // Adjust the interval as needed (e.g., fetch every 5 seconds)
-  
+      }, 1000); // Adjust the interval as needed (e.g., fetch every 5 seconds)
+
       // Cleanup function to clear the interval when the component unmounts
       return () => clearInterval(intervalId);
     }
-
   }, []);
 
   const onlineIcon = (
@@ -110,14 +115,85 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device 
   return (
     <div className="device-listing">
       <Modal modalState={settingsModal}>
-        <p>Device Ram: {JSON.stringify(deviceStats)}</p>
-        <p>Device CPU: {JSON.stringify(deviceStats)}</p>
-        <p>Device temp: {JSON.stringify(deviceStats)}</p>
+        <h2 style={{marginBottom: 0}}>Settings</h2>
+        <span style={{color: "grey", margin:0, padding:0, fontFamily: "monospace"}}><i>{device && device.id}</i></span>
+        {!deviceStats
+          ? null
+          : (
+              <>
+                <span style={{display: "block"}}>
+                  <b>Device Ram: </b>{Math.round(deviceStats.ram * 100) / 100}%
+                </span >
+                <span style={{display: "block"}}>
+                  <b>Device CPU: </b>{Math.round(deviceStats.cpu * 100) / 100}%
+                </span>
+                <span style={{display: "block"}}>
+                  <b>Device Temp: </b>{Math.round(deviceStats.temp * 100) / 100}°
+                </span>
+                <span style={{display: "block"}}>
+                  <b>Current State: </b>{deviceStats.state}
+                </span>
+                <span style={{display: "block"}}>
+                  <b>Last Distance: </b>{Math.round(deviceStats.dist * 100) / 100}
+                </span>
+                <p></p>
+                <div className="button-group">
+                <Button color={"Tomato"} label={"Reboot"} onClick={async () => {
+                  console.log("Reboot clicked")
+                  try {
+                    const response = await fetch(`http://${host}:80/api/reboot`, {
+                      method: "post",
+                      headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: device.id }),
+                      cache: "default",
+                    });
+          
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    //setLoading(false);
+                  }
+                }}>
+
+                </Button>
+                <Button label={"Disconnect"} color={"red"} onClick={async () => {
+                  console.log("Reboot clicked")
+                  try {
+                    const response = await fetch(`http://${host}:80/api/disconnect`, {
+                      method: "post",
+                      headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: device.id }),
+                      cache: "default",
+                    });
+          
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    //setLoading(false);
+                  }
+                }}></Button>
+                </div>
+
+              </>
+            )}
       </Modal>
       <div className="settings-icon">{deviceIcon}</div>
       <div className="device-info container">
         <div className="left-half">
-          <p className="device-name">{deviceName}
+          <p className="device-name">
+            {deviceName}
             <span className={`online-status ${onlineStatus ? "online" : "offline"}`}>
               {onlineStatus ? onlineIcon : offlineIcon}
               {onlineStatus ? "Connected" : "Offline"}
@@ -129,8 +205,17 @@ const DeviceListing = ({ deviceName, deviceIP, deviceIcon, onlineStatus, device 
         </div>
         <div className="right-half">
           <div className="buttons-parent">
-            <button onClick={() => { settingsModal.open() }}><span>{settingsIcon}</span></button>
-            <Button color={known ? "Tomato" : "DarkSeaGreen"} label={known ? "Remove" : "Assign"}></Button>
+            <button
+              onClick={() => {
+                settingsModal.open();
+              }}
+            >
+              <span>{settingsIcon}</span>
+            </button>
+            <Button
+              color={known ? "Tomato" : "DarkSeaGreen"}
+              label={known ? "Remove" : "Assign"}
+            ></Button>
           </div>
         </div>
       </div>

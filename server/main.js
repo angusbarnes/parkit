@@ -36,6 +36,8 @@ let devices = [
   { name: "Test 2", id: "34234234324", connected: false, known: false},
 ];
 
+let deviceSockets = {};
+
 app.get("/api/devicelist", (req, res) => {
   res.send({ devices: devices });
 });
@@ -60,7 +62,7 @@ app.get("/api/spotcount", (req, res) => {
 app.post("/api/stat", (req, res) => {
     // Access JSON data from the request body
     const jsonData = req.body;
-
+    console.log(`A device stat request was made: ${JSON.stringify(jsonData)}`)
     const foundDevice = devices.find(device => device.id === jsonData.id);
     if (foundDevice && foundDevice.stat) {
         console.log(`Requested states for ${jsonData.id}: ${JSON.stringify(foundDevice.stat)}`)
@@ -69,6 +71,29 @@ app.post("/api/stat", (req, res) => {
         res.json(null);
     }
     
+  });
+
+  app.post("/api/reboot", (req, res) => {
+    // Access JSON data from the request body
+    const jsonData = req.body;
+    console.log(`Attempting to reboot device with data: ${JSON.stringify(jsonData)}`)
+
+    if (deviceSockets[jsonData["id"]]) {
+        deviceSockets[jsonData["id"]].send(JSON.stringify({"type": "reboot"}))
+        console.log("Reboot request sent")
+    }
+  });
+
+  app.post("/api/disconnect", (req, res) => {
+    // Access JSON data from the request body
+    const jsonData = req.body;
+    console.log(`Attempting to disconnect device with data: ${JSON.stringify(jsonData)}`)
+
+    if (deviceSockets[jsonData["id"]]) {
+        deviceSockets[jsonData["id"]].close()
+        deviceSockets[jsonData["id"]] = null
+        console.log("disconnect request sent")
+    }
   });
 
 app.post("/api/registerdevice", (req, res) => {
@@ -177,17 +202,19 @@ wss.on("connection", (ws, req) => {
         devices.push({id: id, name: name, type: type, known: false, connected: true})
       }
 
+      deviceSockets[id] = ws;
       ws.on("close", () => {
         const foundDevice = devices.find(device => device.id === id);
         if (foundDevice) {
           foundDevice.connected = false;
         }
+        deviceSockets[id] = null;
       });
     } else if (type == "DEVICE_STAT") {
-      const {id, temp, cpu, ram} = body;
+      const {id, temp, cpu, ram, CURRENT_DEVICE_STATE, dist} = body;
       const foundDevice = devices.find(device => device.id === id);
       if (foundDevice) {
-        foundDevice.stat = {temp, cpu, ram};
+        foundDevice.stat = {temp, cpu, ram, state: CURRENT_DEVICE_STATE, dist};
       }
     }
   });
