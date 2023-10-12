@@ -21,7 +21,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
           <QRCode
             size={256}
             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-            value={"http://parkit.cc/"}
+            value={`http://parkit.cc/park?id=${id}`}
             viewBox={`0 0 256 256`}
           />
         </Modal>
