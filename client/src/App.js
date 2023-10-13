@@ -1,4 +1,4 @@
-import logo from "./logo.png";
+import logo from "./logo_small.png";
 import "./App.css";
 import React, { useState, useCallback, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";

@@ -12,9 +12,13 @@ const Navbar = ({ logo }) => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <div className="navbar-brand">
+        <div className="navbar-brand button-group">
           <Link to="/">
             <img src={logo}></img>
+            <div>
+            <span className="mainlogo">ParkIT</span>
+            <span className="sublogo">SOLUTIONS</span>
+          </div>
           </Link>
         </div>
         <div className={`navbar-links ${isNavOpen ? "open" : ""}`}>
