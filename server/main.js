@@ -109,6 +109,10 @@ app.post("/api/registerdevice", (req, res) => {
   res.json({ message: "Data received successfully!" });
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 let sendStateUpdate = (ws, cell_states) => {
   ws.send(
     JSON.stringify({ type: "STATE_UPDATE", data: { count: cellStates.length, cells: cellStates } })
