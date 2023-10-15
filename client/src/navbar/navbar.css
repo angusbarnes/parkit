@@ -1,6 +1,6 @@
 /* Navbar styles */
 .navbar {
-  background-color: #23967f;
+  background-color: #212121;
   color: #fff;
   padding: 10px 0;
 }
@@ -48,29 +48,42 @@
   text-decoration: none;
   margin: 0 15px;
   font-size: 1rem;
-  transition: color 0.3s ease-in-out;
+  transition: color 0.15s ease-in-out;
 }
 
 
+.logo {
+  color: #eceff1;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 40px;
+}
+
 .mainlogo {
-  color: #c1ff72;
+  color: mediumspringgreen;
   display: block;
   margin: 0;
   padding: 0;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bolder;
 }
 
 .sublogo {
   display: block;
-  font-size: 15px;
+  font-size: 11px;
   color: #d9d9d9;
   margin: 0;
   padding: 0;
 }
 
 .navbar-links a:hover {
-  color: #007bff;
+  color: mediumspringgreen;
 }
 
 /* Navbar toggle button styles */

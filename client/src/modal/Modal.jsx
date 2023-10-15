@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./model.css"; // Import your modal styles
 import { useModal } from "./useModal";
 
-const Modal = ({ modalState, onClose = null, style, children }) => {
-  if (!modalState.status) {
+const Modal = ({ modalState, initial=false, onClose = null, style, children }) => {
+  if (!modalState.status && initial === false) {
     return null;
   }
 

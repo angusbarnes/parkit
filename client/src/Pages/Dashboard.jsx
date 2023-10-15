@@ -65,7 +65,7 @@ function Dashboard({ websocket }) {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        style={{ height: 35, verticalAlign: "bottom" }}
+        style={{ height: 35, verticalAlign: "bottom", display: "block"}}
       >
         <path
           strokeLinecap="round"
@@ -81,7 +81,7 @@ function Dashboard({ websocket }) {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        style={{ height: 35, verticalAlign: "bottom" }}
+        style={{ height: 35, verticalAlign: "bottom", display: "block" }}
       >
         <path
           strokeLinecap="round"
@@ -99,7 +99,7 @@ function Dashboard({ websocket }) {
         fill="none"
         stroke-linecap="round"
         stroke-linejoin="round"
-        style={{ height: 35, verticalAlign: "bottom" }}
+        style={{ height: 35, verticalAlign: "bottom", display: "block"}}
       >
         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
         <path d="M3 13m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
@@ -115,7 +115,7 @@ function Dashboard({ websocket }) {
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"
         viewBox="0 0 16 16"
-        style={{ height: 35, verticalAlign: "bottom" }}
+        style={{ height: 35, verticalAlign: "bottom", display: "block" }}
       >
         <path d="M0 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H9.269c.144.162.33.324.531.475a6.785 6.785 0 0 0 .907.57l.014.006.003.002A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.224-.947l.003-.002.014-.007a4.473 4.473 0 0 0 .268-.148 6.75 6.75 0 0 0 .639-.421c.2-.15.387-.313.531-.475H2a2 2 0 0 1-2-2V6Zm2-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H2Z" />
         <path d="M8 6.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm7 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" />
@@ -131,7 +131,7 @@ function Dashboard({ websocket }) {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               fill="currentColor"
-              class="bi bi-database-check"
+              class="icon"
               style={{ height: 30, verticalAlign: "-8px" }}
             >
               <path d="M6 9a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3A.5.5 0 0 1 6 9zM3.854 4.146a.5.5 0 1 0-.708.708L4.793 6.5 3.146 8.146a.5.5 0 1 0 .708.708l2-2a.5.5 0 0 0 0-.708l-2-2z" />
@@ -175,7 +175,7 @@ function Dashboard({ websocket }) {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               fill="currentColor"
-              class="bi bi-database-check"
+              class="icon"
               style={{ height: 30, verticalAlign: "-5px" }}
             >
               <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514Z" />
@@ -221,7 +221,7 @@ function Dashboard({ websocket }) {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
-              class="bi bi-database-x"
+              class="icon"
               viewBox="0 0 16 16"
               style={{ height: 30, verticalAlign: "-5px" }}
             >

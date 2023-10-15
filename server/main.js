@@ -6,7 +6,7 @@ const app = express();
 const port = 80;
 
 // Serve the static HTML page
-app.use(express.static("../client/build"));
+//app.use(express.static("../client/build"));
 app.use(express.json());
 
 // Enable CORS for all routes
@@ -109,8 +109,25 @@ app.post("/api/registerdevice", (req, res) => {
   res.json({ message: "Data received successfully!" });
 });
 
+// Serve landing page assets
+app.use('/', express.static(path.join(__dirname, 'src')));
+
+// Serve the static files for the React app
+app.use('/app', express.static(path.join(__dirname, '../client/build')));
+
+// Define route for your landing page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/index.html'));
+});
+
+// Define route for your React app
+app.get('/app/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
+// Catch-all route for other routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.status(404).send('Not Found');
 });
 
 let sendStateUpdate = (ws, cell_states) => {

@@ -12,7 +12,7 @@
   }
 
   .content-container-dark {
-    background-color: #23967f; /* Slightly off-white or very light gray */
+    background-color: #212121; /* Slightly off-white or very light gray */
     color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
@@ -39,7 +39,7 @@
 }
 
 .content-container-dark {
-  background-color: #23967f; /* Slightly off-white or very light gray */
+  background-color: #212121; /* Slightly off-white or very light gray */
   color: #fff;
   max-width: 1400px;
   border-radius: 10px;

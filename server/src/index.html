@@ -1,0 +1,101 @@
+<!-- Start Landing Page -->
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="/favicon.ico"/>
+  </head>
+  <div class="landing-page">
+    <header>
+      <div class="container">
+        <a href="#" class="logo">
+          <img src="Logo.svg" alt="My Happy SVG" style="height: 35px; margin-right: 8px" />
+          Park<b>IT</b></a
+        >
+        <ul class="links">
+          <li>Home</li>
+          <li>About Us</li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="/app">View Demo</a></li>
+        </ul>
+      </div>
+    </header>
+    <div class="content">
+      <div class="container">
+        <div class="info">
+          <h1>A revolution in parking technology</h1>
+          <p>
+            We believe that modern parking solutions leave a lot to be desired. With the ParkSense
+            Pro + ParkIT cloud, we aim to fix that.
+          </p>
+          <button onclick="openAppInNewTab()">Launch App</button>
+
+          <script>
+            function openAppInNewTab() {
+              // Specify the URL you want to open in a new tab
+              var appUrl = "/app";
+
+              // Open the URL in a new tab
+              window.open(appUrl, "_blank");
+            }
+          </script>
+        </div>
+        <div class="image">
+          <img src="https://i.postimg.cc/65QxYYzh/001234.png" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pricing">
+    <main class="main flow">
+      <h1 class="main__heading" id="pricing">ParkIT Cloud Pricing</h1>
+      <div class="main__cards cards">
+        <div class="cards__inner">
+          <div class="cards__card card">
+            <h2 class="card__heading basic">Basic</h2>
+            <p class="card__price">$9.99</p>
+            <span>(per park, per month)</span>
+            <ul role="list" class="card__bullets flow">
+              <li>ParkIT Cloud server support for up to 10 spots</li>
+              <li>Email support</li>
+            </ul>
+            <a href="#basic" class="card__cta cta">Get Started</a>
+          </div>
+
+          <div class="cards__card card">
+            <h2 class="card__heading pro">Pro</h2>
+            <p class="card__price">$19.99</p>
+            <span>(per park, per month)</span>
+            <ul role="list" class="card__bullets flow">
+              <li>ParkIT Cloud Relay + Server service</li>
+              <li>Support for up to 20 spots</li>
+              <li>Exclusive access to live Q&A sessions</li>
+            </ul>
+            <a href="#pro" class="card__cta cta">Upgrade to Pro</a>
+          </div>
+
+          <div class="cards__card card">
+            <h2 class="card__heading enterprise">Enterprise</h2>
+            <p class="card__price">Contact Sales</p>
+            <ul role="list" class="card__bullets flow">
+              <li>Enterprise grade configurability</li>
+              <li>Custom consultation to meet your needs</li>
+              <li>Support for ParkIT Cloud or LAN Gateway infrastructure</li>
+            </ul>
+            <a href="#ultimate" class="card__cta cta">Go Ultimate</a>
+          </div>
+        </div>
+
+        <div class="overlay cards__inner"></div>
+      </div>
+    </main>
+    <div style="width: 100%">
+      <footer class="main-footer">
+        <p>Copyright © 2023 ParkIT LLC</p>
+        <a href="mailto: contact@parkit.cc">contact@parkit.cc</a>
+      </footer>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <!-- End Landing Page -->
+</html>

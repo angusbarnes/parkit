@@ -1,7 +1,7 @@
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1.5fr));
+  gap: 10px;
   max-width: 100%; /* Optional: Set a maximum width for the grid */
   margin: auto;
 }
