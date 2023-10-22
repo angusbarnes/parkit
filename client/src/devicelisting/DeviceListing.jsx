@@ -136,6 +136,9 @@ const DeviceListing = ({
                 <span style={{display: "block"}}>
                   <b>Last Distance: </b>{Math.round(deviceStats.dist * 100) / 100}
                 </span>
+                <span style={{display: "block"}}>
+                  <b>Presence: </b>{deviceStats.parked ? "Taken" :  "Free"}
+                </span>
                 <p></p>
                 <div className="button-group">
                 <Button color={"Tomato"} label={"Reboot"} onClick={async () => {

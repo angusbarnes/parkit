@@ -23,22 +23,22 @@ const server = app.listen(port, () => {
   console.log(`Server started on http://parkit.cc:${port}`);
 });
 
-const privateKeyPath = '/etc/letsencrypt/live/parkit.cc/fullchain.pem';
-const certificatePath = '/etc/letsencrypt/live/parkit.cc/privkey.pem';
+// const privateKeyPath = '/etc/letsencrypt/live/parkit.cc/fullchain.pem';
+// const certificatePath = '/etc/letsencrypt/live/parkit.cc/privkey.pem';
 
-if (fs.existsSync(privateKeyPath) && fs.existsSync(certificatePath)) {
-  const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
-  const certificate = fs.readFileSync(certificatePath, 'utf8');
-  const credentials = { key: privateKey, cert: certificate };
+// if (fs.existsSync(privateKeyPath) && fs.existsSync(certificatePath)) {
+//   const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+//   const certificate = fs.readFileSync(certificatePath, 'utf8');
+//   const credentials = { key: privateKey, cert: certificate };
 
-  const httpsServer = https.createServer(credentials, app);
+//   const httpsServer = https.createServer(credentials, app);
 
-  httpsServer.listen(portHTTPS, () => {
-    console.log(`HTTPS server listening on port ${portHTTPS}`);
-  });
-} else {
-  console.log('HTTPS server not started. Key or certificate file missing.');
-}
+//   httpsServer.listen(portHTTPS, () => {
+//     console.log(`HTTPS server listening on port ${portHTTPS}`);
+//   });
+// } else {
+//   console.log('HTTPS server not started. Key or certificate file missing.');
+// }
 
 // WebSocket server
 const wss = new WebSocket.Server({ server });
@@ -251,10 +251,10 @@ wss.on("connection", (ws, req) => {
         deviceSockets[id] = null;
       });
     } else if (type == "DEVICE_STAT") {
-      const {id, temp, cpu, ram, CURRENT_DEVICE_STATE, dist} = body;
+      const {id, temp, cpu, ram, CURRENT_DEVICE_STATE, dist, parked} = body;
       const foundDevice = devices.find(device => device.id === id);
       if (foundDevice) {
-        foundDevice.stat = {temp, cpu, ram, state: CURRENT_DEVICE_STATE, dist};
+        foundDevice.stat = {temp, cpu, ram, state: CURRENT_DEVICE_STATE, dist, parked};
       }
     }
   });
