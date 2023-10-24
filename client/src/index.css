@@ -22,3 +22,8 @@ code {
 .icon {
   display: inline-block;
 }
+
+input {
+  text-align: center;
+  letter-spacing: 0.5ch;
+}

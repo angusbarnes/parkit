@@ -116,10 +116,10 @@ const Park = ({ id, toggleStateFunction, state }) => {
           viewBox={`0 0 256 256`}
         />
       </Modal>
-      <Modal modalState={bookingModal}  >
-        <h3 style={{ width: 350 }}>Book Park #{id}</h3>
+      <Modal modalState={bookingModal}>
+        <h3 style={{ width: 350 }}>Book Park #{id+1}</h3>
         <label style={{ paddingTop: 20 }}>Please Enter your license plate number:</label>
-        <input type="text" value={plate} onChange={(e) => setPlate(e.target.value)} />
+        <input type="text" spellcheck="false" value={plate} onChange={(e) => setPlate(e.target.value.toUpperCase())} />
         <div className="container" style={{ padding: 15, paddingBottom: 0 }}>
           <Button
             color={"RoyalBlue"}
@@ -133,9 +133,9 @@ const Park = ({ id, toggleStateFunction, state }) => {
         </div>
       </Modal>
       <Modal modalState={cancelModal}>
-        <h3 style={{ width: 350 }}>Book this park</h3>
+        <h3 style={{ width: 350 }}>Cancel this park</h3>
         <label style={{ paddingTop: 20 }}>Please Enter your license plate number:</label>
-        <input type="text" value={plate} onChange={(e) => setPlate(e.target.value)} />
+        <input type="text" spellcheck="false" value={plate} onChange={(e) => setPlate(e.target.value.toUpperCase())} />
         <div className="container" style={{ padding: 15, paddingBottom: 0 }}>
           <Button
             color={"Tomato"}
@@ -156,7 +156,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
                 class="bg-cover bg-center h-40 p-4"
                 style={{
                   backgroundImage:
-                    "url(https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80)",
+                    "url(https://images.unsplash.com/photo-1543465077-db45d34b88a5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80)",
                 }}
               >
                 <div class="flex justify-end">

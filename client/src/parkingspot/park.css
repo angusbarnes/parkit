@@ -58,6 +58,10 @@
   display: flex;
 }
 
+input {
+  width: 50%;
+}
+
 .grid-item {
   display: flex;
   flex-direction: column;
