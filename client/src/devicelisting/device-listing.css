@@ -1,92 +1,92 @@
 .device-listing {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    margin-bottom: 10px; /* Adjust as needed to create space between device listings */
-  }
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px; /* Adjust as needed to create space between device listings */
+}
 
-  .device-listing:hover {
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    padding: 11;
-  }
+.device-listing:hover {
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 11;
+}
 
-  .buttons-parent {
-    display: flex;
-    align-items: center;
-  }
+.buttons-parent {
+  display: flex;
+  align-items: center;
+}
 
-  .icon {
-    width: 20px;
-    height: 20px;
-    vertical-align: -4px;
-    padding: 0;
-    margin: 0;
-    padding-right: 3px;
-  }
+.icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: -4px;
+  padding: 0;
+  margin: 0;
+  padding-right: 3px;
+}
 
-  .icon-large {
-    width: 25px;
-    height: 25px;
-    vertical-align: -4px;
-    padding: 0;
-    margin: 0;
-    padding-right: 0px;
-  }
-  .settings-icon {
-    vertical-align: middle;
-    padding-left: 5px;
-    margin-right: 20px;
-  }
-  
-  .device-info {
-    flex-grow: 1; /* This allows the device info to take up the remaining space */
-  }
-  
-  .device-name {
-    font-weight: bold;
-    padding: 0;
-    margin: 0;
-  }
+.icon-large {
+  width: 25px;
+  height: 25px;
+  vertical-align: -4px;
+  padding: 0;
+  margin: 0;
+  padding-right: 0px;
+}
+.settings-icon {
+  vertical-align: middle;
+  padding-left: 5px;
+  margin-right: 20px;
+}
 
-  .device-name span {
-    font-weight: normal;
-    padding-left: 10px;
-    margin: 0;
-  }
-  .device-ip{
-    padding: 0;
-    margin-top: 3px;
-  }
-  
-  .online-status {
-    padding: 0;
-    margin: 0;
-  }
-  
-  .offline {
-    color: #F44336; /* Red color for offline status */
-  }
+.device-info {
+  flex-grow: 1; /* This allows the device info to take up the remaining space */
+}
 
-  .online {
-    color: #4CAF50; /* Green color for online status */
-  }
-  
-  .container {
-    display: flex;
-    justify-content: space-between;
-    /* border: 1px solid #ccc; */
-  }
+.device-name {
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
 
-  .left-half {
-    /* background-color: lightblue; */
-    margin-right: auto;
-  }
+.device-name span {
+  font-weight: normal;
+  padding-left: 10px;
+  margin: 0;
+}
+.device-ip {
+  padding: 0;
+  margin-top: 3px;
+}
 
-  .right-half {
-    /* background-color: coral; */
-    margin-left: auto;
-  }
+.online-status {
+  padding: 0;
+  margin: 0;
+}
+
+.offline {
+  color: #f44336; /* Red color for offline status */
+}
+
+.online {
+  color: #4caf50; /* Green color for online status */
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  /* border: 1px solid #ccc; */
+}
+
+.left-half {
+  /* background-color: lightblue; */
+  margin-right: auto;
+}
+
+.right-half {
+  /* background-color: coral; */
+  margin-left: auto;
+}

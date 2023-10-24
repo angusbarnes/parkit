@@ -115,34 +115,43 @@ const DeviceListing = ({
   return (
     <div className="device-listing">
       <Modal modalState={settingsModal}>
-        <h2 style={{marginBottom: 0}}>Settings</h2>
-        <span style={{color: "grey", margin:0, padding:0, fontFamily: "monospace"}}><i>{device && device.id}</i></span>
-        {!deviceStats
-          ? null
-          : (
-              <>
-                <span style={{display: "block"}}>
-                  <b>Device Ram: </b>{Math.round(deviceStats.ram * 100) / 100}%
-                </span >
-                <span style={{display: "block"}}>
-                  <b>Device CPU: </b>{Math.round(deviceStats.cpu * 100) / 100}%
-                </span>
-                <span style={{display: "block"}}>
-                  <b>Device Temp: </b>{Math.round(deviceStats.temp * 100) / 100}°
-                </span>
-                <span style={{display: "block"}}>
-                  <b>Current State: </b>{deviceStats.state}
-                </span>
-                <span style={{display: "block"}}>
-                  <b>Last Distance: </b>{Math.round(deviceStats.dist * 100) / 100}
-                </span>
-                <span style={{display: "block"}}>
-                  <b>Presence: </b>{deviceStats.parked ? "Taken" :  "Free"}
-                </span>
-                <p></p>
-                <div className="button-group">
-                <Button color={"Tomato"} label={"Reboot"} onClick={async () => {
-                  console.log("Reboot clicked")
+        <h2 style={{ marginBottom: 0 }}>Settings</h2>
+        <span style={{ color: "grey", margin: 0, padding: 0, fontFamily: "monospace" }}>
+          <i>{device && device.id}</i>
+        </span>
+        {!deviceStats ? null : (
+          <>
+            <span style={{ display: "block" }}>
+              <b>Device Ram: </b>
+              {Math.round(deviceStats.ram * 100) / 100}%
+            </span>
+            <span style={{ display: "block" }}>
+              <b>Device CPU: </b>
+              {Math.round(deviceStats.cpu * 100) / 100}%
+            </span>
+            <span style={{ display: "block" }}>
+              <b>Device Temp: </b>
+              {Math.round(deviceStats.temp * 100) / 100}°
+            </span>
+            <span style={{ display: "block" }}>
+              <b>Current State: </b>
+              {deviceStats.state}
+            </span>
+            <span style={{ display: "block" }}>
+              <b>Last Distance: </b>
+              {Math.round(deviceStats.dist * 100) / 100}
+            </span>
+            <span style={{ display: "block" }}>
+              <b>Presence: </b>
+              {deviceStats.parked ? "Taken" : "Free"}
+            </span>
+            <p></p>
+            <div className="button-group">
+              <Button
+                color={"Tomato"}
+                label={"Reboot"}
+                onClick={async () => {
+                  console.log("Reboot clicked");
                   try {
                     const response = await fetch(`http://${host}:80/api/reboot`, {
                       method: "post",
@@ -153,7 +162,7 @@ const DeviceListing = ({
                       body: JSON.stringify({ id: device.id }),
                       cache: "default",
                     });
-          
+
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
                     }
@@ -162,11 +171,13 @@ const DeviceListing = ({
                   } finally {
                     //setLoading(false);
                   }
-                }}>
-
-                </Button>
-                <Button label={"Disconnect"} color={"red"} onClick={async () => {
-                  console.log("Reboot clicked")
+                }}
+              ></Button>
+              <Button
+                label={"Disconnect"}
+                color={"red"}
+                onClick={async () => {
+                  console.log("Reboot clicked");
                   try {
                     const response = await fetch(`http://${host}:80/api/disconnect`, {
                       method: "post",
@@ -177,7 +188,7 @@ const DeviceListing = ({
                       body: JSON.stringify({ id: device.id }),
                       cache: "default",
                     });
-          
+
                     if (!response.ok) {
                       throw new Error("Network response was not ok");
                     }
@@ -186,11 +197,11 @@ const DeviceListing = ({
                   } finally {
                     //setLoading(false);
                   }
-                }}></Button>
-                </div>
-
-              </>
-            )}
+                }}
+              ></Button>
+            </div>
+          </>
+        )}
       </Modal>
       <div className="settings-icon">{deviceIcon}</div>
       <div className="device-info container">

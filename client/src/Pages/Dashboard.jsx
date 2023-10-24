@@ -37,7 +37,6 @@ function Dashboard({ websocket }) {
     return () => clearInterval(intervalId);
   }, []);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,7 +50,7 @@ function Dashboard({ websocket }) {
         setSpotCount(result.count);
       } catch (error) {
         //setError(error);
-      } 
+      }
     };
 
     fetchData();
@@ -65,7 +64,7 @@ function Dashboard({ websocket }) {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        style={{ height: 35, verticalAlign: "bottom", display: "block"}}
+        style={{ height: 35, verticalAlign: "bottom", display: "block" }}
       >
         <path
           strokeLinecap="round"
@@ -99,7 +98,7 @@ function Dashboard({ websocket }) {
         fill="none"
         stroke-linecap="round"
         stroke-linejoin="round"
-        style={{ height: 35, verticalAlign: "bottom", display: "block"}}
+        style={{ height: 35, verticalAlign: "bottom", display: "block" }}
       >
         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
         <path d="M3 13m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
@@ -204,16 +203,20 @@ function Dashboard({ websocket }) {
           deviceIcon={devicesIcons.gateway}
           onlineStatus={false}
         ></DeviceListing>
-        {deviceList.filter((device) => device.known).map((device) => (
-          <DeviceListing
-            deviceName={device.name}
-            key={device.id}
-            deviceIP="Cloud Relay Enabled"
-            deviceIcon={devicesIcons.parkitpro}
-            onlineStatus={device.connected}
-            known={true}
-          >test</DeviceListing>
-        ))}
+        {deviceList
+          .filter((device) => device.known)
+          .map((device) => (
+            <DeviceListing
+              deviceName={device.name}
+              key={device.id}
+              deviceIP="Cloud Relay Enabled"
+              deviceIcon={devicesIcons.parkitpro}
+              onlineStatus={device.connected}
+              known={true}
+            >
+              test
+            </DeviceListing>
+          ))}
       </ContentBox>
       <ContentBox>
         <h3>
@@ -232,17 +235,21 @@ function Dashboard({ websocket }) {
           <span style={{ fontSize: 20 }}> Unknown Devices:</span>
         </h3>
         <p>New devices will show up here for assignment</p>
-        {deviceList.filter((device) => !device.known).map((device) => (
-          <DeviceListing
-            device={device}
-            deviceName={device.name}
-            key={device.id}
-            deviceIP="Cloud Relay Enabled"
-            deviceIcon={devicesIcons.parkitpro}
-            onlineStatus={device.connected}
-            known={false}
-          >test</DeviceListing>
-        ))}
+        {deviceList
+          .filter((device) => !device.known)
+          .map((device) => (
+            <DeviceListing
+              device={device}
+              deviceName={device.name}
+              key={device.id}
+              deviceIP="Cloud Relay Enabled"
+              deviceIcon={devicesIcons.parkitpro}
+              onlineStatus={device.connected}
+              known={false}
+            >
+              test
+            </DeviceListing>
+          ))}
       </ContentBox>
     </>
   );

@@ -3,7 +3,7 @@ import "./park.css";
 import Button from "../layout/Button";
 import Modal from "../modal/Modal";
 import { useModal } from "../modal/useModal";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
 
 const Park = ({ id, toggleStateFunction, state }) => {
@@ -18,12 +18,12 @@ const Park = ({ id, toggleStateFunction, state }) => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const showModal = queryParams.get('id') == id;
+    const showModal = queryParams.get("id") == id;
 
     if (showModal) {
       // Do something with the modal, e.g., open it
       navigate(location.pathname);
-      bookingModal.open()
+      bookingModal.open();
     }
   }, [location, navigate]);
 
@@ -63,12 +63,12 @@ const Park = ({ id, toggleStateFunction, state }) => {
 
   const takenIcon = (
     <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="red"
-    class="pt-1 mr-3 w-10 h-10"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="red"
+      class="pt-1 mr-3 w-10 h-10"
     >
       <path
         strokeLinecap="round"
@@ -81,26 +81,24 @@ const Park = ({ id, toggleStateFunction, state }) => {
   function getRandomTime() {
     // Get the current date and time
     const now = new Date();
-  
+
     // Set the maximum time limit to 5 hours from now
     const maxTime = new Date(now.getTime() + 5 * 60 * 60 * 1000);
-  
+
     // Generate a random time within the given range
-    const randomTime = new Date(
-      now.getTime() + Math.floor(Math.random() * (maxTime - now))
-    );
-  
+    const randomTime = new Date(now.getTime() + Math.floor(Math.random() * (maxTime - now)));
+
     // Round the minutes to the nearest 15-minute increment
     const roundedMinutes = Math.ceil(randomTime.getMinutes() / 15) * 15;
     randomTime.setMinutes(roundedMinutes);
-  
+
     // Format the time as a string
     const formattedTime = randomTime.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     });
-  
+
     return formattedTime;
   }
 
@@ -117,9 +115,14 @@ const Park = ({ id, toggleStateFunction, state }) => {
         />
       </Modal>
       <Modal modalState={bookingModal}>
-        <h3 style={{ width: 350 }}>Book Park #{id+1}</h3>
+        <h3 style={{ width: 350 }}>Book Park #{id + 1}</h3>
         <label style={{ paddingTop: 20 }}>Please Enter your license plate number:</label>
-        <input type="text" spellcheck="false" value={plate} onChange={(e) => setPlate(e.target.value.toUpperCase())} />
+        <input
+          type="text"
+          spellcheck="false"
+          value={plate}
+          onChange={(e) => setPlate(e.target.value.toUpperCase())}
+        />
         <div className="container" style={{ padding: 15, paddingBottom: 0 }}>
           <Button
             color={"RoyalBlue"}
@@ -135,7 +138,12 @@ const Park = ({ id, toggleStateFunction, state }) => {
       <Modal modalState={cancelModal}>
         <h3 style={{ width: 350 }}>Cancel this park</h3>
         <label style={{ paddingTop: 20 }}>Please Enter your license plate number:</label>
-        <input type="text" spellcheck="false" value={plate} onChange={(e) => setPlate(e.target.value.toUpperCase())} />
+        <input
+          type="text"
+          spellcheck="false"
+          value={plate}
+          onChange={(e) => setPlate(e.target.value.toUpperCase())}
+        />
         <div className="container" style={{ padding: 15, paddingBottom: 0 }}>
           <Button
             color={"Tomato"}
@@ -176,14 +184,13 @@ const Park = ({ id, toggleStateFunction, state }) => {
                   </svg>
                 </div>
                 <div class="bg-white p-4 rounded flex justify-start w-min">
-                <QRCode
-              size={128}
-              style={{ height: "auto", width:"90px", margin: 0, padding: 0}}
-              value={`http://parkit.cc/app?id=${id}`}
-              viewBox={`0 0 128 128`}
-            />
+                  <QRCode
+                    size={128}
+                    style={{ height: "auto", width: "90px", margin: 0, padding: 0 }}
+                    value={`http://parkit.cc/app?id=${id}`}
+                    viewBox={`0 0 128 128`}
+                  />
                 </div>
-
               </div>
               <div class="p-4">
                 <p class="uppercase tracking-wide text-sm font-bold text-gray-700">

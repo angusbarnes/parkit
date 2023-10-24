@@ -14,12 +14,12 @@ const Navbar = ({ logo }) => {
       <div className="navbar-container">
         <div className="navbar-brand button-group">
           <Link to="/" className="logo">
-                <img src ={logo} alt="My Happy SVG" style={{height: '35px', marginRight: '8px'}}/>
-                {/* Park<b>IT</b> */}
+            <img src={logo} alt="My Happy SVG" style={{ height: "35px", marginRight: "8px" }} />
+            {/* Park<b>IT</b> */}
             <div>
-            <span className="mainlogo">ParkIT</span>
-            <span className="sublogo">Booking Manager</span>
-          </div>
+              <span className="mainlogo">ParkIT</span>
+              <span className="sublogo">Booking Manager</span>
+            </div>
           </Link>
         </div>
         <div className={`navbar-links ${isNavOpen ? "open" : ""}`}>
