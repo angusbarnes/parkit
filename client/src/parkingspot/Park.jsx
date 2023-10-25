@@ -15,6 +15,25 @@ const Park = ({ id, toggleStateFunction, state }) => {
   const navigate = useNavigate();
 
   const [plate, setPlate] = useState("");
+  const [selectedTime, setSelectedTime] = useState('09:00'); // Initial value for the time input
+
+
+  const handleTimeChange = (event) => {
+    const newTime = event.target.value;
+    setSelectedTime(newTime);
+  };
+
+  const handleSubmit = ()=> {
+    const selectedTimeDate = new Date(`2023-09-18T${selectedTime}`);
+    const currentTime = new Date();
+    if (selectedTimeDate <= currentTime) {
+      alert('Selected time must be after the current time.');
+      return;
+    }
+    
+    // Continue with form submission or other actions
+  };
+
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -102,6 +121,11 @@ const Park = ({ id, toggleStateFunction, state }) => {
     return formattedTime;
   }
 
+  const equippedTablet = <div className="disk"><span className="logo1">ParkSense</span><span className="logo2">Pro</span></div>
+
+  const notEquippedTablet = <div className="disk"><span className="red">ONLINE ONLY</span></div>
+
+
   return (
     <>
       <Modal modalState={qrModal}>
@@ -116,12 +140,24 @@ const Park = ({ id, toggleStateFunction, state }) => {
       </Modal>
       <Modal modalState={bookingModal}>
         <h3 style={{ width: 350 }}>Book Park #{id + 1}</h3>
+        <label style={{ paddingTop: 20 }}>Please select the end time:</label>
+        <input
+          type="time"
+          id="endtime"
+          name="endtime"
+          min="09:00"
+          max="18:00"
+          required
+          value={selectedTime}
+          onChange={handleTimeChange}
+        />
         <label style={{ paddingTop: 20 }}>Please Enter your license plate number:</label>
         <input
           type="text"
-          spellcheck="false"
+          spellCheck="false"
           value={plate}
           onChange={(e) => setPlate(e.target.value.toUpperCase())}
+          required
         />
         <div className="container" style={{ padding: 15, paddingBottom: 0 }}>
           <Button
@@ -129,8 +165,27 @@ const Park = ({ id, toggleStateFunction, state }) => {
             label={"Book"}
             onClick={() => {
               if (!plate) return;
+
+              if(state["state"] == 1 || state["taken"] === true) {
+                alert('This spot is currently taken/reserved');
+                bookingModal.close();
+                return;
+              }
+              console.log(selectedTime)
+
+              const now = new Date();
+              const hours = String(now.getHours())
+              const minutes = String(now.getMinutes())
+
+              const selectedHour = parseInt(selectedTime.split(':')[0])
+              const selectedMinute = parseInt(selectedTime.split(':')[1])
+
+              if ((selectedHour == hours && selectedMinute <= minutes) || (selectedHour <= hours)) {
+                alert('Selected time must be after the current time.');
+                return;
+              }
               bookingModal.close();
-              toggleStateFunction(id, true, plate);
+              toggleStateFunction(id, true, plate, selectedTime);
             }}
           />
         </div>
@@ -140,7 +195,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
         <label style={{ paddingTop: 20 }}>Please Enter your license plate number:</label>
         <input
           type="text"
-          spellcheck="false"
+          spellCheck="false"
           value={plate}
           onChange={(e) => setPlate(e.target.value.toUpperCase())}
         />
@@ -198,6 +253,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
                 </p>
                 <p class="text-3xl text-gray-900">$10.00/hr</p>
                 <p class="text-gray-700">Reserved for business use.</p>
+                {state["device"] ? equippedTablet : notEquippedTablet}
               </div>
 
               <div class="flex p-4 border-t border-gray-300 text-gray-700">
@@ -238,11 +294,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
                       stroke-width="1.5"
                       stroke="currentColor"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                      />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
 
                     <div class="text-left text-sm">
@@ -257,11 +309,11 @@ const Park = ({ id, toggleStateFunction, state }) => {
                   Current Status
                 </div>
                 <div class="flex items-center pt-2">
-                  {state ? availableIcon : reservedIcon}
+                  {state["state"] == 0 && !state["taken"] ? availableIcon : state["taken"] ? takenIcon : reservedIcon}
                   <div>
-                    <p class="font-bold text-gray-900">{state ? "Available" : "Reserved"}</p>
+                    <p class="font-bold text-gray-900">{state["state"] == 0 && !state["taken"] ? "Available" : state["taken"] ? "Taken" : "Reserved"}</p>
                     <p class="text-sm text-gray-700">
-                      {state ? `Free until ${getRandomTime()}` : "Next Available: 2 hours"}
+                      {state["state"] == 0 && !state["taken"] ? `Free until 22:00` : `Next Available: ${state["bookedUntil"]}`}
                     </p>
                   </div>
                 </div>

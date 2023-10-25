@@ -13,8 +13,10 @@ const DeviceListing = ({
   onlineStatus,
   device = null,
   known = true,
+  spotCount = 10,
 }) => {
   const settingsModal = useModal();
+  const assignModal = useModal();
   const [deviceStats, setDeviceStats] = useState(null);
 
   useEffect(() => {
@@ -59,6 +61,41 @@ const DeviceListing = ({
       return () => clearInterval(intervalId);
     }
   }, [setDeviceStats]);
+
+
+
+  function SendAssignment(parkId) {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://${host}:80/api/config/assoc`, {
+          method: "post",
+          headers: {
+            Accept: "application.json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({id:device.id, park_id: parkId}),
+          cache: "default",
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const result = await response.json();
+        console.log(`Device List Request Succeeded: ${JSON.stringify(result)}`);
+        if (result) {
+          setDeviceStats(result);
+        }
+      } catch (error) {
+        //setError(error);
+      } finally {
+        //setLoading(false);
+      }
+    };
+
+    fetchData();
+  }
+
 
   const onlineIcon = (
     <svg
@@ -114,6 +151,20 @@ const DeviceListing = ({
 
   return (
     <div className="device-listing">
+      <Modal modalState={assignModal}>
+        {Array.from({ length: spotCount }, (_, index) => (
+          <Button 
+            key={index} 
+            label={`Assign to Park ID: ${index}`} 
+            color={"DarkSeaGreen"}
+            onClick={() => { 
+              assignModal.close();
+              device && SendAssignment(index);
+              console.log(`Fired Association Request: ${index}`)
+            }}
+          />
+        ))}
+      </Modal>
       <Modal modalState={settingsModal}>
         <h2 style={{ marginBottom: 0 }}>Settings</h2>
         <span style={{ color: "grey", margin: 0, padding: 0, fontFamily: "monospace" }}>
@@ -229,6 +280,9 @@ const DeviceListing = ({
             <Button
               color={known ? "Tomato" : "DarkSeaGreen"}
               label={known ? "Remove" : "Assign"}
+              onClick={() => {
+                assignModal.open();
+              }}
             ></Button>
           </div>
         </div>

@@ -152,7 +152,7 @@ function Dashboard({ websocket }) {
             type="number"
             min="1"
             max="100"
-            style={{ width: 50 }}
+            style={{ width: 70, letterSpacing: "normal"}}
             value={spotCount}
             onChange={(e) => setSpotCount(e.target.value)}
           ></input>
@@ -213,6 +213,7 @@ function Dashboard({ websocket }) {
               deviceIcon={devicesIcons.parkitpro}
               onlineStatus={device.connected}
               known={true}
+              spotCount={spotCount}
             >
               test
             </DeviceListing>

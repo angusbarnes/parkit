@@ -19,7 +19,7 @@ function Home({ websocket }) {
         case "STATE_UPDATE":
           const { count, cells } = data;
           setParkingState({ count: count, states: cells });
-          console.log(`New States Received: Count: ${count}, ${cells}`);
+          console.log(`New States Received: Count: ${count}, ${JSON.stringify(cells)}`);
           break;
 
         case "CONNECTION_COUNT":
@@ -38,12 +38,12 @@ function Home({ websocket }) {
   }, []);
 
   const handleParkingSpotInteraction = useCallback(
-    (id, value, plate) =>
+    (id, value, plate, time) =>
       websocket.sendMessage(
         JSON.stringify({
           type: "UPDATE_CELL_REQUEST",
           cell_id: id,
-          body: { cell_state: value ? 1 : 0, plateNumber: plate },
+          body: { cell_state: value ? 1 : 0, plateNumber: plate, time},
         })
       ),
     []

@@ -48,11 +48,21 @@ const STATE_CODE_FULL = 1;
 const STATE_CODE_RESERVED = 3;
 
 let cellCount = 10;
-let cellStates = Array(cellCount).fill({ state: STATE_CODE_EMPTY, plate: "", device: false });
+
+const stateTemplate = {
+  state: STATE_CODE_EMPTY, 
+  plate: "", 
+  device: false, 
+  deviceId: null,
+  bookedUntil: "21:00",
+  taken: false
+}
+
+let cellStates = Array(cellCount).fill(null).map(() => ({ ...stateTemplate }));
 
 let devices = [
-  { name: "Test 1", id: "35253252523532", connected: false, known: true},
-  { name: "Test 2", id: "34234234324", connected: false, known: false},
+  { name: "Test Device", id: "35253252523532", connected: false, known: true},
+  { name: "Virtual ParkSense Pro", id: "34234234324", connected: false, known: false, device: {id: 'test'}},
 ];
 
 let deviceSockets = {};
@@ -128,6 +138,34 @@ app.post("/api/registerdevice", (req, res) => {
   res.json({ message: "Data received successfully!" });
 });
 
+app.post("/api/config/assoc", (req, res) => {
+  // Access JSON data from the request body
+  console.log(cellStates);
+  const jsonData = req.body;
+  const { id, park_id } = jsonData;
+  console.log(`Association Made, ID: ${id}, ParkID: ${park_id}`);
+
+  cellStates.filter((item) => (item.deviceId == id)).map((item) => {item.device = false; item.deviceId = null})
+  
+  const spot = {...cellStates[park_id]};
+  console.log(spot)
+  if (cellStates[park_id]) {
+    spot.device = true;
+    spot.deviceId = id;
+    cellStates[park_id] = spot;
+  } else {
+    console.log(`park_id ${park_id} not found in cellStates.`);
+  }
+ 
+  wss.clients.forEach((ws) => {
+    sendStateUpdate(ws, cellStates)
+  });
+  console.log(cellStates);
+
+  // Send a response
+  res.json({ message: "Data received successfully!" });
+});
+
 // Serve landing page assets
 app.use('/', express.static(path.join(__dirname, 'src')));
 
@@ -146,7 +184,7 @@ app.get('/app/*', (req, res) => {
 
 // Catch-all route for other routes
 app.get('*', (req, res) => {
-  res.status(404).send('Not Found');
+  res.status(404).send('Error 404: Page Not Found. Unlucky soldier, better luck next time.');
 });
 
 let sendStateUpdate = (ws, cell_states) => {
@@ -181,7 +219,7 @@ wss.on("connection", (ws, req) => {
     if (type === "UPDATE_CELL_REQUEST") {
       const cellIndex = parseInt(cell_id);
 
-      const { cell_state, plateNumber } = body;
+      const { cell_state, plateNumber, time } = body;
 
       if (cellIndex >= 0 && cellIndex < cellStates.length) {
         console.log(`Park ${cellIndex} updated with state ${cell_state}`);
@@ -190,7 +228,10 @@ wss.on("connection", (ws, req) => {
           return;
         }
 
-        cellStates[cellIndex] = { state: cell_state, plate: plateNumber, device: false };
+        const spot = cellStates[cellIndex];
+        spot.plate = plateNumber;
+        spot.state = cell_state;
+        spot.bookedUntil = time;
 
         // Broadcast the updated state to all connected clients
         wss.clients.forEach((client) => {
@@ -202,7 +243,11 @@ wss.on("connection", (ws, req) => {
     } else if (type === "POLL_STATE") {
       sendStateUpdate(ws, cellStates);
     } else if (type == "RESET_STATE") {
-      cellStates = Array(cellCount).fill({ state: STATE_CODE_EMPTY, plate: "", device: false });
+      cellStates.map((spot) => {
+        spot.plate = null;
+        spot.bookedUntil = "22:00",
+        spot.state = STATE_CODE_EMPTY
+      });
       // Broadcast the updated state to all connected clients
       wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
@@ -256,6 +301,24 @@ wss.on("connection", (ws, req) => {
       if (foundDevice) {
         foundDevice.stat = {temp, cpu, ram, state: CURRENT_DEVICE_STATE, dist, parked};
       }
+
+      const foundSpot = cellStates.find(spot => spot.deviceId === id);
+      if (foundSpot) {
+          foundSpot.taken = parked;
+
+          if (foundSpot.state == 0 && parked) {
+            foundSpot.bookedUntil = "Unkown";
+          }
+      }
+
+      wss.clients.forEach((client) => {
+
+        if (client == ws) return; //Dont send to the device that gave us this stat
+
+        if (client.readyState === WebSocket.OPEN) {
+          sendStateUpdate(client, cellStates);
+        }
+      });
     }
   });
 
