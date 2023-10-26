@@ -228,7 +228,7 @@ const DeviceListing = ({
                 label={"Disconnect"}
                 color={"red"}
                 onClick={async () => {
-                  console.log("Reboot clicked");
+                  console.log("disconnect clicked");
                   try {
                     const response = await fetch(`http://${host}:80/api/disconnect`, {
                       method: "post",
@@ -249,7 +249,165 @@ const DeviceListing = ({
                     //setLoading(false);
                   }
                 }}
-              ></Button>
+              ></Button>              <Button
+              label={"Shutdown"}
+              color={"red"}
+              onClick={async () => {
+                console.log("disconnect clicked");
+                try {
+                  const response = await fetch(`http://${host}:80/api/shutdown`, {
+                    method: "post",
+                    headers: {
+                      Accept: "application.json",
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ id: device.id }),
+                    cache: "default",
+                  });
+
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                } catch (error) {
+                  console.log(error);
+                } finally {
+                  //setLoading(false);
+                }
+              }}
+            ></Button>
+
+            </div>
+            <div className="button-group">
+            <Button
+                label={"G"}
+                color={"orange"}
+                onClick={async () => {
+                  console.log("Clock clicked");
+                  try {
+                    const response = await fetch(`http://${host}:80/api/sendsignal`, {
+                      method: "post",
+                      headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: device.id, data : {signal: 'gamma'}}),
+                      cache: "default",
+                    });
+
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    //setLoading(false);
+                  }
+                }}
+              />
+            <Button
+                label={"A"}
+                color={"red"}
+                onClick={async () => {
+                  console.log("Clock clicked");
+                  try {
+                    const response = await fetch(`http://${host}:80/api/sendsignal`, {
+                      method: "post",
+                      headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: device.id, data : {signal: 'alpha'}}),
+                      cache: "default",
+                    });
+
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    //setLoading(false);
+                  }
+                }}
+              />
+              <Button
+                label={"B"}
+                color={"blue"}
+                onClick={async () => {
+                  console.log("Clock clicked");
+                  try {
+                    const response = await fetch(`http://${host}:80/api/sendsignal`, {
+                      method: "post",
+                      headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: device.id, data : {signal: 'beta'}}),
+                      cache: "default",
+                    });
+
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    //setLoading(false);
+                  }
+                }}
+              />
+              <Button
+                label={"0"}
+                color={"black"}
+                onClick={async () => {
+                  console.log("Clock clicked");
+                  try {
+                    const response = await fetch(`http://${host}:80/api/sendsignal`, {
+                      method: "post",
+                      headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: device.id, data : {signal: 'noop'}}),
+                      cache: "default",
+                    });
+
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    //setLoading(false);
+                  }
+                }}
+              />
+              <Button
+                label={"Clock"}
+                color={"grey"}
+                onClick={async () => {
+                  console.log("Clock clicked");
+                  try {
+                    const response = await fetch(`http://${host}:80/api/sendsignal`, {
+                      method: "post",
+                      headers: {
+                        Accept: "application.json",
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: device.id, data : {signal: 'clock'}}),
+                      cache: "default",
+                    });
+
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    //setLoading(false);
+                  }
+                }}
+              />
             </div>
           </>
         )}

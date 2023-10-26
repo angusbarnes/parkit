@@ -113,6 +113,30 @@ app.post("/api/stat", (req, res) => {
     }
   });
 
+
+  app.post("/api/shutdown", (req, res) => {
+    // Access JSON data from the request body
+    const jsonData = req.body;
+    console.log(`Attempting to shutdown device with data: ${JSON.stringify(jsonData)}`)
+
+    if (deviceSockets[jsonData["id"]]) {
+        deviceSockets[jsonData["id"]].send(JSON.stringify({"type": "shutdown"}))
+        console.log("shutdown request sent")
+    }
+  });
+
+
+  app.post("/api/sendsignal", (req, res) => {
+    // Access JSON data from the request body
+    const jsonData = req.body;
+    console.log(`Attempting to forward signal to device with data: ${JSON.stringify(jsonData)}`)
+
+    if (deviceSockets[jsonData["id"]]) {
+        deviceSockets[jsonData["id"]].send(JSON.stringify({"type": "signal", "body": jsonData.data}))
+        console.log("Signal forwarded to device.")
+    }
+  });
+
   app.post("/api/disconnect", (req, res) => {
     // Access JSON data from the request body
     const jsonData = req.body;
@@ -233,6 +257,14 @@ wss.on("connection", (ws, req) => {
         spot.state = cell_state;
         spot.bookedUntil = time;
 
+        if (spot.device) {
+          const foundSocket = deviceSockets[spot.deviceId]
+
+          if (foundSocket) {
+            foundSocket.send(JSON.stringify({"type": "RESERVE", state: cell_state == 1 ? true : false}))
+          }
+        }
+
         // Broadcast the updated state to all connected clients
         wss.clients.forEach((client) => {
           if (client.readyState === WebSocket.OPEN) {
@@ -259,7 +291,7 @@ wss.on("connection", (ws, req) => {
       count = parseInt(count);
       console.warn(`DB_RESIZE_EVENT: Current: ${cellCount}, New: ${count}`);
       if (count > cellCount) {
-        cellStates.push(...Array(count - cellCount).fill({ state: STATE_CODE_EMPTY, plate: "", device: false}));
+        cellStates.push(...Array(count - cellCount).fill(null).map(() => ({ ...stateTemplate })));
       } else if (count < cellCount) {
         cellStates = cellStates.slice((start = 0), (end = count));
       }

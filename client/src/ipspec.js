@@ -1,1 +1,1 @@
-export const host = "parkit.cc";
+export const host = "localhost";
