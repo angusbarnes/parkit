@@ -169,7 +169,7 @@ app.post("/api/config/assoc", (req, res) => {
   const { id, park_id } = jsonData;
   console.log(`Association Made, ID: ${id}, ParkID: ${park_id}`);
 
-  cellStates.filter((item) => (item.deviceId == id)).map((item) => {item.device = false; item.deviceId = null})
+  cellStates.filter((item) => (item.deviceId == id)).map((item) => {item.device = false; item.deviceId = null; item.taken = false})
   
   const spot = {...cellStates[park_id]};
   console.log(spot)
@@ -180,6 +180,9 @@ app.post("/api/config/assoc", (req, res) => {
   } else {
     console.log(`park_id ${park_id} not found in cellStates.`);
   }
+
+
+  deviceSockets[id].send(JSON.stringify({"type": "RESERVE", state: cellStates[park_id].state == 1 ? true : false}))
  
   wss.clients.forEach((ws) => {
     sendStateUpdate(ws, cellStates)
@@ -222,6 +225,36 @@ let sendConnectionCount = () => {
     ws.send(JSON.stringify({ type: "CONNECTION_COUNT", data: wss.clients.size }));
   });
 };
+
+setInterval(() => {
+  console.log("Attempting to clear park")
+  cellStates.map((spot) => {
+    const now = new Date();
+    const hours = String(now.getHours())
+    const minutes = String(now.getMinutes())
+
+    if (!spot.bookedUntil) return;
+    const selectedHour = parseInt(spot.bookedUntil.split(':')[0])
+    const selectedMinute = parseInt(spot.bookedUntil.split(':')[1])
+
+    if ((selectedHour == hours && selectedMinute >= minutes) || (selectedHour >= hours)) {
+      spot.state = 0;
+      if(spot.device) {
+        const foundSocket = deviceSockets[spot.deviceId]
+
+        if (foundSocket) {
+          foundSocket.send(JSON.stringify({"type": "RESERVE", state: spot.state == 1 ? true : false}))
+        }
+      }
+    }
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        sendStateUpdate(client, cellStates);
+      }
+    });
+  });
+
+}, 1000 * 60)
 
 wss.on("connection", (ws, req) => {
   // Send the current state to the newly connected client
@@ -280,6 +313,10 @@ wss.on("connection", (ws, req) => {
         spot.bookedUntil = "22:00",
         spot.state = STATE_CODE_EMPTY
       });
+
+      Object.entries(deviceSockets).map(([key, ws]) => {
+        ws.send(JSON.stringify({"type": "RESERVE", state: false}))
+      })
       // Broadcast the updated state to all connected clients
       wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {

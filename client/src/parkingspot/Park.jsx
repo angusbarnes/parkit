@@ -134,7 +134,7 @@ const Park = ({ id, toggleStateFunction, state }) => {
         <QRCode
           size={256}
           style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-          value={`http://parkit.cc/park?id=${id}`}
+          value={`http://parkit.cc/app?id=${id}`}
           viewBox={`0 0 256 256`}
         />
       </Modal>
@@ -179,8 +179,8 @@ const Park = ({ id, toggleStateFunction, state }) => {
 
               const selectedHour = parseInt(selectedTime.split(':')[0])
               const selectedMinute = parseInt(selectedTime.split(':')[1])
-
-              if ((selectedHour == hours && selectedMinute <= minutes) || (selectedHour <= hours)) {
+              console.log(`${hours}:${minutes}`)
+              if ((selectedHour == hours && selectedMinute <= minutes) || (selectedHour < hours)) {
                 alert('Selected time must be after the current time.');
                 return;
               }
