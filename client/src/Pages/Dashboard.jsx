@@ -2,11 +2,47 @@ import DeviceListing from "../devicelisting/DeviceListing";
 import ContentBox from "../layout/ContentBox";
 import Button from "../layout/Button";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { host } from "../ipspec";
 
 function Dashboard({ websocket }) {
   const [spotCount, setSpotCount] = useState(0);
   const [deviceList, setDeviceList] = useState([]);
+  const [logged, setLogged] = useState(false);
+  const [hasExecuted, setHasExecuted] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the component is being loaded on a specific route
+    if (location.pathname === '/Dashboard' && !hasExecuted) {
+
+      if (logged) {
+        return;
+      }
+      console.log("loaded Dashboard")
+      // Execute your JavaScript code here
+      let person = prompt("Please enter the password", "");
+      let text;
+
+      if (person === null || person === "") {
+        text = "User cancelled the prompt.";
+        navigate('/');
+      } else {
+        if (person == 'parkitadmin') {
+          setLogged(true);
+
+        } else {
+          navigate('/');
+        }
+      }
+    }
+
+    setHasExecuted(true);
+
+  }, [location, navigate, logged, setLogged, hasExecuted]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
